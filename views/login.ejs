@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+
+<h2>Iniciar sesión</h2>
+
+<% if (typeof error !== 'undefined') { %>
+  <p style="color: red;"><%= error %></p>
+<% } %>
+
+<form action="/usuarios/login" method="POST">
+  <label>Email:</label>
+  <input type="email" name="email" placeholder="email" required><br>
+
+  <label>Contraseña:</label>
+  <input type="password" name="password" placeholder="contraseña" required><br>
+
+  <button type="submit">Ingresar</button>
+</form>
+
+<p>¿No tenés cuenta? <a href="/register">Registrate</a></p>
+
+<%- include('partials/footer') %>

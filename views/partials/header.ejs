@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Artesanos</title>
+  <link rel="stylesheet" href="/css/styles.css"> <!-- si tenés estilos -->
+</head>
+<body>
+  <header>
+    <h1>Artesanos.com</h1>
+    <% if (typeof user !== 'undefined') { %>
+      <p>Bienvenido, <%= user.nombre %> | <a href="/usuarios/logout">Salir</a></p>
+    <% } %>
+    <hr>
+  </header>
