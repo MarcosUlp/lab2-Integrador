@@ -1,0 +1,23 @@
+
+  <h2>Iniciar sesión</h2>
+
+  <% if (typeof error !=='undefined' ) { %>
+    <p style="color: red;">
+      <%= error %>
+    </p>
+    <% } %>
+      <main class="login-container">
+        <form action="/usuarios/login" method="POST">
+          <label>Email:</label>
+          <input type="email" name="email" placeholder="email" required><br>
+
+          <label>Contraseña:</label>
+          <input type="password" name="password" placeholder="contraseña" required><br>
+
+          <button type="submit">Ingresar</button>
+        </form>
+        <div class="extra-options">
+          <p><a href="/register">tienes cuenta?</a></p>
+          <p><a href="/explorar">Ingresa como invitado</a></p>
+        </div>
+      </main>

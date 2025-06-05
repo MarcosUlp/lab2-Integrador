@@ -1,0 +1,67 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  background: #f3f3f3;
+}
+
+.barra-superior {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+.barra-superior input[type="text"] {
+  width: 60%;
+  padding: 0.5rem;
+}
+
+.iconos span {
+  margin-left: 1rem;
+  cursor: pointer;
+}
+
+.zona-central {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.subir-album {
+  background: #fff;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+}
+
+.dropzone {
+  border: 2px dashed #aaa;
+  padding: 1rem;
+  margin: 1rem 0;
+  text-align: center;
+  background: #f9f9f9;
+}
+
+.feed-albumes {
+  width: 100%;
+  max-width: 800px;
+}
+
+.galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.album {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 5px #ccc;
+  text-align: center;
+}

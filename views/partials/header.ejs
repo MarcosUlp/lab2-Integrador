@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Artesanos</title>
-  <link rel="stylesheet" href="/css/styles.css"> <!-- si tenés estilos -->
-</head>
-<body>
-  <header>
-    <h1>Artesanos.com</h1>
-    <% if (typeof user !== 'undefined') { %>
-      <p>Bienvenido, <%= user.nombre %> | <a href="/usuarios/logout">Salir</a></p>
-    <% } %>
-    <hr>
-  </header>
+<header class="topbar">
+  <div class="logo">MyApp</div>
+
+  <form action="/buscar" method="get" class="search-form">
+    <input type="text" name="q" placeholder="Buscar álbumes o usuarios..." />
+  </form>
+
+  <div class="nav-icons">
+    <a href="/notificaciones" title="Notificaciones"><i class="icon-bell">🔔</i></a>
+    <a href="/perfil" title="Perfil"><i class="icon-user">👤</i></a>
+    <a href="#" class="menu-hamburguesa" title="Menú"><i class="icon-menu">☰</i></a>
+  </div>
+</header>

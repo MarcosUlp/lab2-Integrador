@@ -1,0 +1,60 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #ffffff;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.search-form input {
+  padding: 0.5rem;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.nav-icons a,
+.nav-icons .menu-hamburguesa {
+  margin-left: 1rem;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: #444;
+  cursor: pointer;
+}
+
+.sidebar {
+  width: 180px;
+  background-color: #f4f4f4;
+  padding: 1rem;
+  height: 100vh;
+  position: fixed;
+  top: 60px; /* ajustar según tu header */
+  left: 0;
+  border-right: 1px solid #ccc;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 1rem;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+.sidebar ul li a:hover {
+  text-decoration: underline;
+}

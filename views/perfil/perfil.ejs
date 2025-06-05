@@ -1,0 +1,21 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<main class="perfil">
+  <div class="portada">
+    <img src="/uploads/portada/<%= user.foto_portada %>" alt="Portada">
+  </div>
+  <div class="foto-perfil">
+    <img src="/uploads/perfil/<%= user.foto_perfil %>" alt="Foto de perfil">
+    <h2><%= user.nombre %></h2>
+  </div>
+
+  <section class="albumes">
+    <% albumes.forEach(album => { %>
+      <div class="album">
+        <h4><%= album.titulo %></h4>
+        <!-- Imágenes -->
+      </div>
+    <% }) %>
+  </section>
+</main>

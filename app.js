@@ -1,40 +1,57 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const session = require('express-session'); // 🔧 AGREGADO
 require('dotenv').config();
-
+const imagenesRouter = require('./routes/imagenes')
 const app = express();
+const usuarioRoutes = require('./routes/userRoutes');
+const perfilRouters = require('./routes/perfil');
+const inicioRouters = require('./routes/inicio');
+const expressLayouts = require('express-ejs-layouts');
 
 // Configuración del motor de vistas
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+//habilita los layouts
+app.use(expressLayouts);
+app.set('layout', 'layout');
+
 // Middlewares
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
-// Archivos estáticos (si usás views públicas o imágenes)
+// 🔧 AGREGAR CONFIGURACIÓN DE SESSION
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'secreto123', // podés poner cualquier string fuerte
+  resave: false,
+  saveUninitialized: false
+}));
+
+// Archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rutas
-const usuarioRoutes = require('./routes/userRoutes');
-app.use('/api/usuarios', usuarioRoutes);
+app.use('/usuarios', usuarioRoutes);
+app.use('/imagenes', imagenesRouter);
+app.use('/perfil', perfilRouters);
+app.use('/inicio', inicioRouters);
 
-// Rutas para mostrar las páginas
+// Vistas
 app.get('/login', (req, res) => {
-  res.render('login'); // busca views/login.ejs
+  res.render('auth/login');
 });
 
-
 app.get('/register', (req, res) => {
-  res.render('register');
+  res.render('auth/register');
 });
 
 app.get('/', (req, res) => {
-  res.redirect('/login'); // o res.render('login') si preferís mostrarlo directamente
+  res.redirect('/login');
 });
 
-// Middleware de error simple
+// Middleware de error
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ mensaje: 'Error interno del servidor' });

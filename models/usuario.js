@@ -1,20 +1,22 @@
-const db = require('./db');
 
-const Usuario = {
-  crear: (datos, callback) => {
-    const sql = `INSERT INTO usuarios (username, email, password, nombre_completo) VALUES (?, ?, ?, ?)`;
-    db.query(sql, [datos.username, datos.email, datos.password, datos.nombre_completo], callback);
+// usando mysql2 con promesas
+const pool = require('../database/db'); // tu conexión a MySQL
+
+module.exports = {
+  create: async (userData) => {
+    const { nombre, email, password, rol } = userData;
+    const [result] = await pool.execute(
+      'INSERT INTO usuarios (username, email, password, rol) VALUES (?, ?, ?, ?)',
+      [nombre, email, password, rol]
+    );
+    return result.insertId;
   },
 
-  buscarPorEmailYPassword: (email, password, callback) => {
-    const sql = `SELECT * FROM usuarios WHERE email = ? AND password = ?`;
-    db.query(sql, [email, password], callback);
-  },
-
-  buscarPorId: (id, callback) => {
-    const sql = `SELECT usuario_id, username, nombre_completo, avatar, bio FROM usuarios WHERE usuario_id = ?`;
-    db.query(sql, [id], callback);
+  findByEmail: async (email) => {
+    const [rows] = await pool.execute(
+      'SELECT * FROM usuarios WHERE email = ?',
+      [email]
+    );
+    return rows[0];
   }
 };
-
-module.exports = Usuario;
