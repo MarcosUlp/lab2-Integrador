@@ -68,7 +68,7 @@ module.exports = {
   // Cerrar sesión
   logout: (req, res) => {
     req.session.destroy(() => {
-      res.redirect('/');
+      res.redirect('/login');
     });
   }
 };

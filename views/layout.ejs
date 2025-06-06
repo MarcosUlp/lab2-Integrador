@@ -1,19 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Artesanos</title>
   <link rel="stylesheet" href="/css/layout.css" />
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/inicio.css">
 </head>
+
 <body>
   <%- include('./partials/header') %>
+  <%- include('./partials/sidebar') %>
 
+      <main>
+        <%- body %>
+      </main>
 
-  <main>
-    <%- body %>
-  </main>
-
-  <%- include('./partials/footer') %>
+      <%- include('./partials/footer') %>
 </body>
+
 </html>
+
+<script>
+  const menuToggle = document.getElementById('menu-hamburguesa');
+  const sidebar = document.getElementById('sidebar');
+
+  menuToggle.addEventListener('click', (e) => {
+    e.preventDefault();
+    sidebar.classList.toggle('active');
+  });
+
+  // Cierra el menú si se hace clic fuera
+  window.addEventListener('click', function (e) {
+    if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+      sidebar.classList.remove('active');
+    }
+  });
+</script>

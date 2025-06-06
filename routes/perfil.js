@@ -29,7 +29,11 @@ router.get('/', requireLogin, async (req, res) => {
       [usuarioId]
     );
 
-    res.render('perfil', { albumes, imagenes });
+    res.render('perfil/perfil', {
+      albumes,
+      imagenes,
+      user: req.session.user
+    });
   } catch (error) {
     console.error('Error al cargar el perfil:', error);
     res.status(500).send('Error en el perfil');

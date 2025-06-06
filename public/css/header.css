@@ -1,0 +1,46 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 10px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1001;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 20px;
+  color: #444;
+}
+
+.search-form {
+  flex-grow: 1;
+  margin: 0 20px;
+}
+
+.search-form input[type="text"] {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-icons a {
+  text-decoration: none;
+  font-size: 18px;
+  color: #444;
+}
+
+.nav-icons .menu-hamburguesa {
+  cursor: pointer;
+  font-size: 20px;
+}

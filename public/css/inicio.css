@@ -1,67 +1,123 @@
-body {
-  font-family: sans-serif;
-  margin: 0;
-  background: #f3f3f3;
+/* === Layout principal === */
+.inicio-layout {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  min-height: 100vh;
 }
 
+/* === Barra superior === */
 .barra-superior {
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
-  background: #fff;
-  border-bottom: 1px solid #ccc;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .barra-superior input[type="text"] {
-  width: 60%;
-  padding: 0.5rem;
+  flex-grow: 1;
+  padding: 8px 12px;
+  margin-right: 15px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
 }
 
 .iconos span {
-  margin-left: 1rem;
+  margin-left: 10px;
+  font-size: 20px;
   cursor: pointer;
 }
 
+/* === Zona central === */
 .zona-central {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
+/* === Subir álbum === */
 .subir-album {
-  background: #fff;
-  padding: 1rem;
-  margin-bottom: 2rem;
-  width: 100%;
-  max-width: 600px;
+  flex: 1;
+  background-color: #ffffff;
+  padding: 15px 20px;
   border-radius: 10px;
-  box-shadow: 0 0 10px #ccc;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  min-width: 300px;
+}
+
+.subir-album h2 {
+  margin-bottom: 10px;
+}
+
+.subir-album form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.subir-album input[type="text"] {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
 .dropzone {
   border: 2px dashed #aaa;
-  padding: 1rem;
-  margin: 1rem 0;
+  padding: 20px;
   text-align: center;
-  background: #f9f9f9;
+  border-radius: 6px;
+  background-color: #fafafa;
+  position: relative;
 }
 
+.dropzone input[type="file"] {
+  margin-top: 10px;
+}
+
+.subir-album button {
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.subir-album button:hover {
+  background-color: #45a049;
+}
+
+/* === Feed de álbumes === */
 .feed-albumes {
-  width: 100%;
-  max-width: 800px;
+  flex: 2;
+  background-color: #ffffff;
+  padding: 15px 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  min-width: 300px;
+}
+
+.feed-albumes h3 {
+  margin-bottom: 10px;
 }
 
 .galeria {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 15px;
 }
 
 .album {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 0 5px #ccc;
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 6px;
   text-align: center;
 }

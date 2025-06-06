@@ -26,7 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(session({
   secret: process.env.SESSION_SECRET || 'secreto123', // podés poner cualquier string fuerte
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
 }));
 
 // Archivos estáticos
