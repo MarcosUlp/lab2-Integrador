@@ -1,19 +1,43 @@
-
 <main class="perfil">
+
+  <!-- FOTO DE PORTADA -->
   <div class="portada">
-    <img src="/uploads/portada/<%= user.foto_portada %>" alt="Portada">
+    <form action="/subir-portada" method="POST" enctype="multipart/form-data">
+      <input type="file" name="foto_portada" accept="image/*" required>
+      <button type="submit">Cambiar foto de portada</button>
+    </form>
+
+    <% if (user.foto_portada) { %>
+      <img src="<%= user.foto_portada %>" alt="Portada">
+    <% } else { %>
+      <p>No tienes foto de portada</p>
+    <% } %>
   </div>
+
+  <!-- FOTO DE PERFIL -->
   <div class="foto-perfil">
-    <img src="/uploads/perfil/<%= user.foto_perfil %>" alt="Foto de perfil">
+    <form action="/usuarios/subir-perfil" method="POST" enctype="multipart/form-data">
+      <input type="file" name="foto_perfil" accept="image/*" required>
+      <button type="submit">Cambiar foto de perfil</button>
+    </form>
+
+    <% if (user.foto_perfil) { %>
+      <img src="<%= user.foto_perfil %>" alt="Foto de perfil">
+    <% } else { %>
+      <p>No tienes foto de perfil</p>
+    <% } %>
+
     <h2><%= user.nombre %></h2>
   </div>
 
+  <!-- ALBUMES -->
   <section class="albumes">
     <% albumes.forEach(album => { %>
       <div class="album">
         <h4><%= album.titulo %></h4>
-        <!-- Imágenes -->
+        <!-- Aquí podrías mostrar imágenes del álbum si las tienes -->
       </div>
     <% }) %>
   </section>
+
 </main>

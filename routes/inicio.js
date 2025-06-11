@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../database/db');
-const {requireLogin} = require('../middlewares/requireLogin');
+const requireLogin = require('../middlewares/requireLogin');
 
 router.get('/', requireLogin, async (req, res) => {
   try {

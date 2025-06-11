@@ -18,9 +18,9 @@ module.exports = {
     return rows[0];
   },
   actualizarFotoPerfil: async (usuarioId, archivo) => {
-    await pool.query('UPDATE usuarios SET foto_perfil = ? WHERE id = ?', [archivo, usuarioId]);
+    await pool.query('UPDATE usuarios SET foto_perfil = ? WHERE usuario_id = ?', [archivo, usuarioId]);
   },
   actualizarFotoPortada: async (usuarioId, archivo) => {
-    await pool.query('UPDATE usuarios SET foto_portada = ? WHERE id = ?', [archivo, usuarioId]);
+    await pool.query('UPDATE usuarios SET foto_portada = ? WHERE usuario_id = ?', [archivo, usuarioId]);
   }
 };
