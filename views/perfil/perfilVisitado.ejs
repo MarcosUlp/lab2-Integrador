@@ -1,0 +1,23 @@
+
+<main class="perfil">
+  <div class="portada">
+    <img src="/uploads/portada/<%= user.foto_portada %>" alt="Portada">
+  </div>
+  <div class="foto-perfil">
+    <img src="/uploads/perfil/<%= user.foto_perfil %>" alt="Foto de perfil">
+    <h2><%= user.nombre %></h2>
+  </div>
+<% if (user && user.id !== perfil.id && !yaHaySolicitud) { %>
+  <form action="/solicitudes/enviar/<%= perfil.id %>" method="POST">
+    <button type="submit">Enviar solicitud de amistad</button>
+  </form>
+<% } %>
+  <section class="albumes">
+    <% albumes.forEach(album => { %>
+      <div class="album">
+        <h4><%= album.titulo %></h4>
+        <!-- Imágenes -->
+      </div>
+    <% }) %>
+  </section>
+</main>

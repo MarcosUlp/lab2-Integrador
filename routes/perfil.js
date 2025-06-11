@@ -1,15 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../database/db');
+const {requireLogin} = require('../middlewares/requireLogin');
 
-// Middleware para verificar login (puede ser opcional o falso mientras desarrollás)
-function requireLogin(req, res, next) {
-  if (req.session && req.session.user) {
-    next();
-  } else {
-    res.redirect('/login');
-  }
-}
 
 router.get('/', requireLogin, async (req, res) => {
   try {

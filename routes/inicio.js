@@ -1,14 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../database/db');
-
-function requireLogin(req, res, next) {
-  if (req.session && req.session.user) {
-    next();
-  } else {
-    res.redirect('/login');
-  }
-}
+const {requireLogin} = require('../middlewares/requireLogin');
 
 router.get('/', requireLogin, async (req, res) => {
   try {

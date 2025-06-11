@@ -1,4 +1,3 @@
-// controllers/userController.js
 const bcrypt = require('bcrypt');
 const usuarioModel = require('../models/usuario');
 
@@ -54,7 +53,9 @@ module.exports = {
         id: user.id,
         nombre: user.nombre,
         email: user.email,
-        rol: user.rol
+        rol: user.rol,
+        foto_perfil: user.foto_perfil,
+        foto_portada: user.foto_portada
       };
       console.log('Login exitoso. Redirigiendo a /inicio...');
 
@@ -70,5 +71,33 @@ module.exports = {
     req.session.destroy(() => {
       res.redirect('/login');
     });
+  },
+
+  // Subir imagen de perfil
+  subirPerfil: async (req, res) => {
+    try {
+      const usuarioId = req.session.user.id;
+      const archivo = req.file.filename;
+      await usuarioModel.actualizarFotoPerfil(usuarioId, archivo);
+      req.session.user.foto_perfil = archivo;
+      res.redirect('/perfil');
+    } catch (err) {
+      console.error('Error al subir foto de perfil:', err);
+      res.status(500).send('Error al subir la imagen.');
+    }
+  },
+
+  // Subir imagen de portada
+  subirPortada: async (req, res) => {
+    try {
+      const usuarioId = req.session.user.id;
+      const archivo = req.file.filename;
+      await usuarioModel.actualizarFotoPortada(usuarioId, archivo);
+      req.session.user.foto_portada = archivo;
+      res.redirect('/perfil');
+    } catch (err) {
+      console.error('Error al subir foto de portada:', err);
+      res.status(500).send('Error al subir la imagen.');
+    }
   }
 };

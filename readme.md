@@ -81,17 +81,31 @@ Paginas dinamicas con uso de plantillas
 └── package.json
 
 
-**dia 1**
+**ESTRUCTURA DEL PROYECTO**
 
-../models/usuario:                   aqui se genera la conexion a la bd  (create, select)
+**CARPETA**                          **DESCRIPCION**
 
-../controllers/usuarioController:    aqui se registra o logea un usuario generando token para mantener  la sesion
+.env                                 Archivo de configuracion con variables de entorno
 
-../middleware/auth:                  autentificacion del token 
-                                    
-../controllers/userController:       Basico con login y registro
+app.js                               Punto de entrada de la aplicacion con servidor Express
 
-../routes/userRoutes                 Rutas para userController
+controllers                          Logica de la aplicacion y manejo de peticiones
+
+middlewares                          Logica intermedia como autenticacion
+
+models                               Modelo de datos, aqui se haran las peticiones a la bd
+
+routes                               Deficinicion de las rutas de mi aplicacion
+
+database                             Configuracion y conexion a la base de datos
+
+views                                Vistas de mi aplicacion con ejs
+
+public                               Archivos estaticos como css e imagenes
+
+package.json                         Dependencias y configuracion del proyecto
+
+readme.md                            Documentacion de mi proyecto
 
 
 
@@ -120,3 +134,39 @@ BONUS
 
 
 
+**CATEGORIA**                  **REQUISITOS**                   **IMPLEMENTACION**                 OBSERVACION
+---------------------------------------------------------------------------------------------------------------------
+🔍usuario y perfil           registro y edicion de perfil            ✅Parcial
+.                          imagenes, intereses, contraseña
+
+🔍Albumes                    Crear álbumes (1-20 imagenes),          ✅parcial
+.                          titulo obligatorio
+
+🔍Imagenes                   Subida con titulo, descripcion          ✅parcial
+.                          opcional y asociacion con album
+
+🔍Amistades                  Solicitudes, aceptar/rechazar,          ✅parcial
+.                          relacion unidireccional
+
+🔍Notificacion en            Solicitudes, comentarios,               ✅parcial
+tiempo real                indicadores de actividad
+
+🔍Etiquetas                  Etiquetar por tecnica/                  ❌Pendiente
+.                          materiales, busqueda por tags
+
+🔍Buscador                   Buscar imagenes, usuarios,              ❌Pendiente
+.                          Álbumes
+
+🔍Funcional.                 Eventos, estadisticas,                  ❌A confirmar
+extra (min 2)              modo vitrina, denuncias
+
+🔍Inicio funcional           Solicitudes, comentarios,               ✅Basico
+(mínimo)                   Compartir imagenes
+
+**SEGURIDAD COOKIES Y AUTENTICACION**
+- Autenticacion: El sistema incluye un middleware llamado auth.js, protegiendo las rutas privadas
+  basicamente se usa para verificar si el usuario esta autenticado antes de acceder a cierta rutas.
+
+- middleware: multer.js: este gestiona la subida de archivos (imágenes), evita ataques de archivos malisiosos
+
+- 

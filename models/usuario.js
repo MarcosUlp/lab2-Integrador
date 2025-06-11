@@ -1,6 +1,4 @@
-
-// usando mysql2 con promesas
-const pool = require('../database/db'); // tu conexión a MySQL
+const pool = require('../database/db'); 
 
 module.exports = {
   create: async (userData) => {
@@ -18,5 +16,11 @@ module.exports = {
       [email]
     );
     return rows[0];
+  },
+  actualizarFotoPerfil: async (usuarioId, archivo) => {
+    await pool.query('UPDATE usuarios SET foto_perfil = ? WHERE id = ?', [archivo, usuarioId]);
+  },
+  actualizarFotoPortada: async (usuarioId, archivo) => {
+    await pool.query('UPDATE usuarios SET foto_portada = ? WHERE id = ?', [archivo, usuarioId]);
   }
 };

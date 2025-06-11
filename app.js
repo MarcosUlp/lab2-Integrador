@@ -1,14 +1,21 @@
 const express = require('express');
+const app = express();
+require('dotenv').config();
 const cors = require('cors');
 const path = require('path');
-const session = require('express-session'); // 🔧 AGREGADO
-require('dotenv').config();
-const imagenesRouter = require('./routes/imagenes')
-const app = express();
-const usuarioRoutes = require('./routes/userRoutes');
-const perfilRouters = require('./routes/perfil');
-const inicioRouters = require('./routes/inicio');
+const session = require('express-session'); 
 const expressLayouts = require('express-ejs-layouts');
+
+//rutas principales
+const imagenesRoutes = require('./routes/imagenes')
+const usuarioRoutes = require('./routes/userRoutes');
+const perfilRoutes = require('./routes/perfil');
+const inicioRoutes = require('./routes/inicio');
+const solicitudesRoutes = require('./routes/solicitudes');
+
+
+
+const PORT = process.env.PORT || 3000;
 
 // Configuración del motor de vistas
 app.set('view engine', 'ejs');
@@ -22,9 +29,9 @@ app.set('layout', 'layout');
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
-// 🔧 AGREGAR CONFIGURACIÓN DE SESSION
+// cpnfiguracion de sesion
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'secreto123', // podés poner cualquier string fuerte
+  secret: process.env.SESSION_SECRET || 'secreto123',
   resave: false,
   saveUninitialized: false,
 }));
@@ -34,9 +41,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Rutas
 app.use('/usuarios', usuarioRoutes);
-app.use('/imagenes', imagenesRouter);
-app.use('/perfil', perfilRouters);
-app.use('/inicio', inicioRouters);
+app.use('/imagenes', imagenesRoutes);
+app.use('/perfil', perfilRoutes);
+app.use('/inicio', inicioRoutes);
+app.use('/solicitudes', solicitudesRoutes);
 
 // Vistas
 app.get('/login', (req, res) => {
@@ -58,7 +66,6 @@ app.use((err, req, res, next) => {
 });
 
 // Puerto
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
