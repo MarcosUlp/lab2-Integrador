@@ -1,8 +1,12 @@
 <main class="perfil">
-
+  <% if (user.username) { %>
+      <h2><%= user.username %></h2>
+    <% } else { %>
+      <p>no tienes username</p>
+    <% } %>
   <!-- FOTO DE PORTADA -->
   <div class="portada">
-    <form action="/subir-portada" method="POST" enctype="multipart/form-data">
+    <form action="/usuarios/subir-portada" method="POST" enctype="multipart/form-data">
       <input type="file" name="foto_portada" accept="image/*" required>
       <button type="submit">Cambiar foto de portada</button>
     </form>
@@ -27,17 +31,41 @@
       <p>No tienes foto de perfil</p>
     <% } %>
 
-    <h2><%= user.nombre %></h2>
+    
   </div>
 
   <!-- ALBUMES -->
-  <section class="albumes">
+  <section class="subir-album">
+      <h2>Subir Álbum</h2>
+      <form action="/imagenes/subiralbum" method="POST" enctype="multipart/form-data">
+        <input type="text" name="titulo" placeholder="Nombre del álbum" required>
+        <div class="dropzone">
+          <p>⬇️ Arrastrar o seleccionar imágenes</p>
+          <input type="file" name="imagenes" multiple accept="image/*" required>
+        </div>
+        <button type="submit">➕ Subir album</button>
+      </form>
+    </section>
+
+    <!-- 📚 Feed de álbumes -->
+<section class="albumes-usuario">
+  <h2>Mis álbumes</h2>
+
+  <% if (albumes.length === 0) { %>
+    <p>No has creado álbumes todavía.</p>
+  <% } else { %>
     <% albumes.forEach(album => { %>
       <div class="album">
-        <h4><%= album.titulo %></h4>
-        <!-- Aquí podrías mostrar imágenes del álbum si las tienes -->
+        <h3><%= album.titulo %></h3>
+        <div class="imagenes">
+          <% imagenes.filter(img => img.albumes_id === album.albumes_id).forEach(img => { %>
+            <img src="<%= img.archivo %>" alt="Imagen del álbum <%= album.titulo %>" />
+          <% }) %>
+        </div>
       </div>
     <% }) %>
-  </section>
+  <% } %>
+</section>
+
 
 </main>

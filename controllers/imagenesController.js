@@ -1,6 +1,7 @@
 
 const path = require('path');
 const albumModel = require('../models/album');
+const imagenModel = require('../models/imagen');
 
 exports.subirAlbum = async (req, res) => {
   try {
@@ -17,9 +18,10 @@ exports.subirAlbum = async (req, res) => {
 
     // 2. Extraer nombres de archivos
     const nombresArchivos = archivos.map(file => file.filename);
+    
 
     // 3. Guardar imágenes en la base de datos
-    await albumModel.agregarImagenes(albumId, nombresArchivos);
+    await imagenModel.agregarImagenes(albumId, nombresArchivos);
 
     res.redirect('/perfil'); // o donde quieras redirigir después
   } catch (error) {
@@ -27,26 +29,21 @@ exports.subirAlbum = async (req, res) => {
     res.status(500).json({ error: 'Error al subir el álbum' });
   }
 };
-
-exports.subirImagen = async (req, res) => {
+exports.mostrarAlbum = async (req, res) => {
   try {
-    const { albumes_id, descripcion } = req.body;
-    const archivo = req.file.filename;
-
-    if (!archivo) {
-      return res.status(400).json({ error: 'No se subió ninguna imagen' });
-    }
-
-    const nuevaImagen = {
-      albumes_id,
-      archivo: `/uploads/${archivo}`,
-      descripcion
-    };
-
-    await pool.query('INSERT INTO imagenes SET ?', nuevaImagen);
-    res.status(200).json({ mensaje: 'Imagen subida con éxito', imagen: nuevaImagen });
+    const usuarioId = req.session.user.id;
+    console.log('userId' + usuarioId);
+    const albumes = await albumModel.obtenerPorUsuario(usuarioId);//todos los albumes_id de x usuario
+    const imagenes = await imagenModel.obtenerImagenesPorUsuario(usuarioId);//obtiene todas las imagenes por albumes_id
+    console.log('albumes' + albumes);
+    console.log('imagenes' + imagenes);
+    res.render('/perfil', {
+      user: req.session.user,
+      albumes,
+      imagenes
+    });
   } catch (error) {
-    console.error('Error al subir imagen:', error);
-    res.status(500).json({ error: 'Error al subir la imagen' });
+    console.error('Error mostrando el perfil:', error);
+    res.status(500).send('Error cargando perfil');
   }
 };

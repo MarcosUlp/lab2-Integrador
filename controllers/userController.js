@@ -41,7 +41,7 @@ module.exports = {
   // Procesar login
   login: async (req, res) => {
     const { email, password } = req.body;
-    console.log('este es el email', email)
+    
     try {
       const user = await usuarioModel.findByEmail(email);
 
@@ -51,7 +51,7 @@ module.exports = {
 
       req.session.user = {
         id: user.usuario_id,
-        nombre: user.nombre,
+        username: user.username,
         email: user.email,
         rol: user.rol,
         foto_perfil: user.foto_perfil,
@@ -79,8 +79,7 @@ module.exports = {
     try {
       const usuarioId = req.session.user.id;
       const archivo  = '/uploads/perfil/' + req.file.filename;
-      console.log('usuarioId', usuarioId);
-      console.log('Ruta relativa', archivo);
+
       await usuarioModel.actualizarFotoPerfil(usuarioId, archivo);
       req.session.user.foto_perfil = archivo;
       res.redirect('/perfil');
@@ -94,7 +93,7 @@ module.exports = {
   subirPortada: async (req, res) => {
     try {
       const usuarioId = req.session.user.id;
-      const archivo = '/uploads/portada' + req.file.filename;
+      const archivo = '/uploads/portada/' + req.file.filename;
       await usuarioModel.actualizarFotoPortada(usuarioId, archivo);
       req.session.user.foto_portada = archivo;
       res.redirect('/perfil');

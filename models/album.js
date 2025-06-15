@@ -8,15 +8,23 @@ module.exports = {
     );
     return result.insertId;
   },
-
-  agregarImagenes: async (albumId, archivos) => {
-    if (!req.files || req.files.length < 1 || req.files.length > 20) {
-      return res.status(400).send('Debes subir entre 1 y 20 imágenes.');
-    }
-    const valores = archivos.map(img => [albumId, img.filename]);
-    await pool.query(
-      'INSERT INTO imagenes (album_id, archivo) VALUES ?',
-      [valores]
+  async obtenerPorUsuario(usuarioId) {//devuelve un arreglo con todas las filas de las tabla albumes de cierto usuario
+    const [rows] = await db.query(
+      'SELECT albumes_id FROM albumes WHERE usuario_id = ?',
+      [usuarioId]
     );
+    return rows;
+  },
+
+  async obtenerPorAlbum_id(albumId) {
+    const [rows] = await db.query(
+      `SELECT i.* 
+      FROM imagenes i 
+      JOIN albumes a ON i.albumes_id = a.albumes_id 
+      WHERE i.albumes_id = ?
+      ORDER BY ASC`,
+      [albumId]
+    );
+    return rows;
   }
 };
