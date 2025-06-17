@@ -133,6 +133,8 @@ module.exports = {
 
     try {
 
+      let albumes = [];
+      let imagenes = [];
       const perfil = await usuarioModel.buscarPorId(idPerfilVisitado);
       const yaHaySolicitud = await solicitudModel.yaHayRelacion(usuarioLogueado.id, idPerfilVisitado);
       const estadoRelacion = await solicitudModel.obtenerEstadoRelacion(usuarioLogueado.id, idPerfilVisitado);
