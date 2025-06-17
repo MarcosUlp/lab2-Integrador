@@ -113,8 +113,9 @@
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest' // opcional, pero ayuda a distinguir peticiones AJAX
+            'X-Requested-With': 'XMLHttpRequest'
           },
+          body: JSON.stringify({}) //objeto vacio para respetar el post
         });
 
         if (res.ok) {

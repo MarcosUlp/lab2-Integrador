@@ -15,11 +15,11 @@ const enviarSolicitud = async (req, res) => {
 
   await Solicitud.enviarSolicitud(emisorId, receptorId);
 
-  if(req.headers['x-requested-with']==='XMLHttpRquest'){
+  if(req.headers['x-requested-with']==='XMLHttpRequest'){
     return res.status(200).json({mensaje: 'Solicitud enviada'})
   }
 
-  res.redirect('/perfil/' + receptorId);
+  res.redirect('/usuarios/perfilVisitado/' + receptorId);
 };
 
 const verPendientes = async (req, res) => {
