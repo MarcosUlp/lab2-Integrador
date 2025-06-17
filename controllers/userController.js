@@ -165,6 +165,7 @@ module.exports = {
     } catch (error) {
       console.error('Error al cargar perfil visitado:', error);
       res.status(500).send('Error al cargar perfil');
+      console.error('Error al cargar perfil visitado:', error.stack);
     }
   }
 };
