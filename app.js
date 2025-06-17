@@ -14,8 +14,6 @@ const inicioRoutes = require('./routes/inicio');
 const solicitudesRoutes = require('./routes/solicitudes');
 const comentarioRoutes = require('./routes/comentarios');
 
-
-
 const PORT = process.env.PORT || 3000;
 
 // Configuración del motor de vistas

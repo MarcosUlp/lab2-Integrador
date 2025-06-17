@@ -32,11 +32,9 @@
         <p id="estadoSolicitud">Ya son amigos</p>
         <% } %>
 
-
+          <!-- if corrobora que sea seguidor de esta cuenta visitada -->
           <% if (sigue) { %>
-            <!-- Mostrar álbumes y fotos -->
 
-            <!-- ALBUMES -->
             <section class="albumes">
               <h3>Álbumes de <%= perfil.username %>
               </h3>
@@ -62,19 +60,20 @@
                                 <!-- Mostrar comentarios -->
                                 <% if (img.comentarios && img.comentarios.length> 0) { %>
                                   <div class="comentarios">
-                                    
-                                            <p><strong>
-                                              <% img.comentarios.forEach(c=> { %>
-                                      <% if (user.foto_perfil) { %>
-                                        <img src="<%= user.foto_perfil %>"alt="Foto de perfil" width="40" height="40">
-                                        <% } else { %>
-                                          <p>No tienes foto de perfil</p>
-                                          <% } %>
+
+                                    <p><strong>
+                                        <% img.comentarios.forEach(c=> { %>
+                                          <% if (user.foto_perfil) { %>
+                                            <img src="<%= user.foto_perfil %>" alt="Foto de perfil" width="40"
+                                              height="40">
+                                            <% } else { %>
+                                              <p>No tienes foto de perfil</p>
+                                              <% } %>
                                                 <%= c.username %>:
-                                              </strong>
-                                              <%= c.contenido %>
-                                            </p>
-                                            <% }) %>
+                                      </strong>
+                                      <%= c.contenido %>
+                                    </p>
+                                    <% }) %>
                                   </div>
                                   <% } else { %>
                                     <p>Sin comentarios.</p>
