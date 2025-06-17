@@ -16,4 +16,7 @@ router.get('/logout', userController.logout);//Logout
 router.post('/subir-perfil', requireLogin, uploadPerfil.single('foto_perfil'), userController.subirPerfil);
 router.post('/subir-portada', requireLogin, uploadPortada.single('foto_portada'), userController.subirPortada);
 
+router.get('/buscar', userController.buscar);
+
+router.get('/perfilVisitado/:id', requireLogin, userController.perfilVisitado);
 module.exports = router;

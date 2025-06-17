@@ -8,7 +8,7 @@ const solicitudController = require('../controllers/solicitudController');
 router.post('/enviar/:id', requireLogin, solicitudController.enviarSolicitud);
 
 //ver solicitudes pendientes
-router.post('/pendientes', requireLogin, solicitudController.verPendientes);
+router.get('/pendientes', requireLogin, solicitudController.verPendientes);
 
 //aceptar solicitud
 router.post('/aceptar/:id', requireLogin, solicitudController.aceptarSolicitud);

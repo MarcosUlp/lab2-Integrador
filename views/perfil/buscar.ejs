@@ -1,0 +1,15 @@
+<h2>Resultados de la búsqueda</h2>
+
+<% if (resultados.length === 0) { %>
+  <p>No se encontraron usuarios con ese nombre.</p>
+<% } else { %>
+  <ul>
+    <% resultados.forEach(usuario => { %>
+      <li>
+         <a href="/usuarios/perfilVisitado/<%= usuario.usuario_id %>">
+          <img src="<%= usuario.foto_perfil || '/default.jpg' %>" alt="Foto de <%= usuario.username %>" width="100" height="100" />
+          <%= usuario.username %>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>

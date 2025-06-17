@@ -12,6 +12,7 @@ const usuarioRoutes = require('./routes/userRoutes');
 const perfilRoutes = require('./routes/perfil');
 const inicioRoutes = require('./routes/inicio');
 const solicitudesRoutes = require('./routes/solicitudes');
+const comentarioRoutes = require('./routes/comentarios');
 
 
 
@@ -47,6 +48,7 @@ app.use('/imagenes', imagenesRoutes);
 app.use('/perfil', perfilRoutes);
 app.use('/inicio', inicioRoutes);
 app.use('/solicitudes', solicitudesRoutes);
+app.use('/comentar', comentarioRoutes);
 
 // Vistas
 app.get('/login', (req, res) => {

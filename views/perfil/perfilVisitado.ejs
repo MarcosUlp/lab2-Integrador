@@ -2,49 +2,133 @@
 
   <!-- FOTO DE PORTADA -->
   <div class="portada">
-    <form action="/subir-portada" method="POST" enctype="multipart/form-data">
-      <input type="file" name="foto_portada" accept="image/*" required>
-      <button type="submit">Cambiar foto de portada</button>
-    </form>
 
-    <% if (user.foto_portada) { %>
-      <img src="<%= user.foto_portada %>" alt="Portada">
-    <% } else { %>
-      <p>No tienes foto de portada</p>
-    <% } %>
+    <% if (perfil.foto_portada) { %>
+      <img src="<%= perfil.foto_portada %>" alt="Portada">
+      <% } else { %>
+        <p>No tienes foto de portada</p>
+        <% } %>
   </div>
 
   <!-- FOTO DE PERFIL -->
   <div class="foto-perfil">
-    <form action="/subir-perfil" method="POST" enctype="multipart/form-data">
-      <input type="file" name="foto_perfil" accept="image/*" required>
-      <button type="submit">Cambiar foto de perfil</button>
-    </form>
-
-    <% if (user.foto_perfil) { %>
-      <img src="<%= user.foto_perfil %>" alt="Foto de perfil">
-    <% } else { %>
-      <p>No tienes foto de perfil</p>
-    <% } %>
-
-    <h2><%= user.nombre %></h2>
+    <% if (perfil.foto_perfil) { %>
+      <img src="<%= perfil.foto_perfil %>" alt="Foto de perfil">
+      <% } else { %>
+        <p>No tienes foto de perfil</p>
+        <% } %>
   </div>
-
+  <h2>
+    <%= perfil.username %>
+  </h2>
   <!-- BOTÓN DE SOLICITUD DE AMISTAD -->
-  <% if (user && perfil && user.id !== perfil.id && !yaHaySolicitud) { %>
-    <form action="/solicitudes/enviar/<%= perfil.id %>" method="POST">
-      <button type="submit">Enviar solicitud de amistad</button>
+  <% if (!sigue) { %>
+    <form id="formSolicitud" action="/solicitudes/enviar/<%= perfil.usuario_id %>" method="POST">
+      <button id="botonSolicitud" type="submit">Enviar solicitud de amistad</button>
     </form>
-  <% } %>
+    <% } else if (sigue==='pendiente' ) { %>
+      <p id="estadoSolicitud">Solicitud enviada</p>
+      <% } else if (sigue==='aceptado' ) { %>
+        <p id="estadoSolicitud">Ya son amigos</p>
+        <% } %>
 
-  <!-- ALBUMES -->
-  <section class="albumes">
-    <% albumes.forEach(album => { %>
-      <div class="album">
-        <h4><%= album.titulo %></h4>
-        <!-- Aquí podrías mostrar imágenes del álbum si las tienes -->
-      </div>
-    <% }) %>
-  </section>
 
+          <% if (sigue) { %>
+            <!-- Mostrar álbumes y fotos -->
+
+            <!-- ALBUMES -->
+            <section class="albumes">
+              <h3>Álbumes de <%= perfil.username %>
+              </h3>
+
+              <% if (albumes.length===0) { %>
+                <p>Este usuario no tiene álbumes aún.</p>
+                <% } else { %>
+                  <% albumes.forEach(album=> { %>
+                    <div class="album">
+                      <h4>
+                        <%= album.titulo %>
+                      </h4>
+
+                      <% const imagenesAlbum=imagenes.filter(img=> img.albumes_id === album.albumes_id);
+                        %>
+
+                        <% if (imagenesAlbum.length> 0) { %>
+                          <div class="imagenes-album">
+                            <% imagenesAlbum.forEach(img=> { %>
+                              <div class="imagen-con-comentarios">
+                                <img src="<%= img.archivo %>" alt="Imagen del álbum" width="150" />
+
+                                <!-- Mostrar comentarios -->
+                                <% if (img.comentarios && img.comentarios.length> 0) { %>
+                                  <div class="comentarios">
+                                    
+                                            <p><strong>
+                                              <% img.comentarios.forEach(c=> { %>
+                                      <% if (user.foto_perfil) { %>
+                                        <img src="<%= user.foto_perfil %>"alt="Foto de perfil" width="40" height="40">
+                                        <% } else { %>
+                                          <p>No tienes foto de perfil</p>
+                                          <% } %>
+                                                <%= c.username %>:
+                                              </strong>
+                                              <%= c.contenido %>
+                                            </p>
+                                            <% }) %>
+                                  </div>
+                                  <% } else { %>
+                                    <p>Sin comentarios.</p>
+                                    <% } %>
+
+                                      <!-- Formulario para comentar -->
+                                      <form action="/comentar/<%= img.imagen_id %>" method="POST">
+                                        <input type="text" name="texto" placeholder="Escribí un comentario" required>
+                                        <button type="submit">Comentar</button>
+                                      </form>
+                              </div>
+                              <% }) %>
+
+                          </div>
+                          <% } else { %>
+                            <p>Álbum sin imágenes.</p>
+                            <% } %>
+                    </div>
+                    <% }) %>
+                      <% } %>
+            </section>
+            <% } else { %>
+              <p>Solo los amigos pueden ver los álbumes.</p>
+              <% } %>
 </main>
+
+<script>
+  const form = document.getElementById('formSolicitud');
+  const boton = document.getElementById('botonSolicitud');
+
+  if (form && boton) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest' // opcional, pero ayuda a distinguir peticiones AJAX
+          },
+        });
+
+        if (res.ok) {
+          // Ocultar el formulario y mostrar mensaje
+          form.innerHTML = '<p>Solicitud enviada</p>';
+        } else {
+          const error = await res.text();
+          alert('Error al enviar la solicitud: ' + error);
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Hubo un problema al enviar la solicitud.');
+      }
+    });
+  }
+</script>

@@ -1,0 +1,15 @@
+<h2>Solicitudes de amistad</h2>
+<ul>
+  <% solicitudes.forEach(s => { %>
+    <li>
+      <img src="<%= s.foto_perfil %>" alt="" width="80" height="80">
+      <%= s.username %> te envió una solicitud.
+      <form action="/solicitudes/aceptar/<%= s.solicitudes_id %>" method="POST" style="display:inline;">
+        <button type="submit">Aceptar</button>
+      </form>
+      <form action="/solicitudes/rechazar/<%= s.solicitudes_id %>" method="POST" style="display:inline;">
+        <button type="submit">Rechazar</button>
+      </form>
+    </li>
+  <% }) %>
+</ul>
