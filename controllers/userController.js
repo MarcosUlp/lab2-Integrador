@@ -152,7 +152,8 @@ module.exports = {
 
 
       console.log(JSON.stringify(albumes, null, 2));
-      console.log('imagenes ' + imagenes)
+      console.log(JSON.stringify(imagenes, null, 2));
+      
       res.render('perfil/perfilVisitado', {
         user: usuarioLogueado,
         perfil,
