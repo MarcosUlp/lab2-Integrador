@@ -33,75 +33,64 @@
         <% } %>
 
           <!-- if corrobora que sea seguidor de esta cuenta visitada -->
-          <% if (sigue) { %>
+<% if (sigue) { %>
+  <section class="albumes">
+    <h3>Álbumes de <%= perfil.username %></h3>
 
-            <section class="albumes">
-              <h3>Álbumes de <%= perfil.username %>
-              </h3>
+    <% if (albumes.length === 0) { %>
+      <p>Este usuario no tiene álbumes aún.</p>
+    <% } else { %>
+      <% albumes.forEach(album => { %>
+        <div class="album">
+          <h4><%= album.titulo %></h4>
 
-              <% if (albumes.length===0) { %>
-                <p>Este usuario no tiene álbumes aún.</p>
-                <% } else { %>
-                  <% albumes.forEach(album=> { %>
-                    <div class="album">
-                      <h4>
-                        <%= album.titulo %>
-                      </h4>
+          <% const imagenesAlbum = imagenes.filter(img => img.albumes_id === album.albumes_id); %>
 
-                      <% const imagenesAlbum=imagenes.filter(img=> img.albumes_id === album.albumes_id);
-                        %>
+          <% if (imagenesAlbum.length > 0) { %>
+            <div class="imagenes-album-grid">
+              <% imagenesAlbum.forEach(img => { %>
+                <div class="imagen-con-comentarios">
+                  <img src="<%= img.archivo %>" alt="Imagen del álbum" class="imagen-album" />
 
-                        <% if (imagenesAlbum.length> 0) { %>
-                          <div class="imagenes-album">
-                            <% imagenesAlbum.forEach(img=> { %>
-                              <div class="imagen-con-comentarios">
-                                <img src="<%= img.archivo %>" alt="Imagen del álbum" width="150" />
-
-                                <pre><%= JSON.stringify(img, null, 2) %></pre>
-
-                                <!-- Mostrar comentarios -->
-                                <% if (img.comentarios && img.comentarios.length> 0) { %>
-                                  <div class="comentarios">
-                                    <% img.comentarios.forEach(c=> { %>
-                                      <p>
-                                        <% if (c.foto_perfil) { %>
-                                          <img src="<%= c.foto_perfil %>" alt="Foto de perfil" width="40" height="40">
-                                          <% } else { %>
-                                            <span>🧑</span>
-                                            <% } %>
-                                              <strong>
-                                                <%= c.username %>:
-                                              </strong>
-                                              <%= c.contenido %>
-                                      </p>
-                                      <% }) %>
-                                  </div>
-
-                                  <% } else { %>
-                                    <p>Sin comentarios.</p>
-                                    <% } %>
-
-                                      <!-- Formulario para comentar -->
-                                      <form action="/comentar/<%= img.imagenes_id %>" method="POST">
-                                        <input type="text" name="texto" placeholder="Escribí un comentario" required>
-                                        <button type="submit">Comentar</button>
-                                      </form>
-                              </div>
-                              <% }) %>
-
-                          </div>
+                  <!-- Comentarios -->
+                  <% if (img.comentarios && img.comentarios.length > 0) { %>
+                    <div class="comentarios">
+                      <% img.comentarios.forEach(c => { %>
+                        <p>
+                          <% if (c.foto_perfil) { %>
+                            <img src="<%= c.foto_perfil %>" alt="Foto de perfil" class="comentario-avatar">
                           <% } else { %>
-                            <p>Álbum sin imágenes.</p>
-                            <% } %>
+                            <span>🧑</span>
+                          <% } %>
+                          <strong><%= c.username %>:</strong> <%= c.contenido %>
+                        </p>
+                      <% }) %>
                     </div>
-                    <% }) %>
-                      <% } %>
-            </section>
-            <% } else { %>
-              <p>Solo los amigos pueden ver los álbumes.</p>
-              <% } %>
+                  <% } else { %>
+                    <p class="sin-comentarios">Sin comentarios.</p>
+                  <% } %>
+
+                  <!-- Formulario para comentar -->
+                  <form action="/comentar/<%= img.imagenes_id %>" method="POST" class="form-comentario">
+                    <input type="text" name="texto" placeholder="Escribí un comentario" required>
+                    <button type="submit">Comentar</button>
+                  </form>
+                </div>
+              <% }) %>
+            </div>
+          <% } else { %>
+            <p>Álbum sin imágenes.</p>
+          <% } %>
+        </div>
+      <% }) %>
+    <% } %>
+  </section>
+<% } else { %>
+  <p>Solo los amigos pueden ver los álbumes.</p>
+<% } %>
 </main>
 
+        
 <script>
   const form = document.getElementById('formSolicitud');
   const boton = document.getElementById('botonSolicitud');
