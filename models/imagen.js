@@ -16,7 +16,7 @@ module.exports = {
 
   async obtenerImagenesPorUsuario(usuarioId) {
     const [rows] = await pool.query(
-      `SELECT i.imagen_id, i.archivo, i.albumes_id, a.titulo, a.fecha_creacion
+      `SELECT i.imagenes_id, i.archivo, i.albumes_id, a.titulo, a.fecha_creacion
      FROM imagenes i
      INNER JOIN albumes a ON i.albumes_id = a.albumes_id
      WHERE a.usuario_id = ?
