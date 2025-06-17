@@ -3,7 +3,7 @@ const pool = require('../database/db');
 module.exports = {
   agregarComentario: async (usuarioId, imagenId, contenido) => {
     const [result] = await pool.query(
-      'INSERT INTO comentarios (usuario_id, imagen_id, contenido) VALUES (?, ?, ?)',
+      'INSERT INTO comentarios (usuario_id, imagenes_id, contenido) VALUES (?, ?, ?)',
       [usuarioId, imagenId, contenido]
     );
     return result.insertId;
@@ -14,7 +14,7 @@ module.exports = {
       `SELECT c.*, u.username, u.foto_perfil 
        FROM comentarios c
        JOIN usuarios u ON c.usuario_id = u.usuario_id
-       WHERE c.imagen_id = ?
+       WHERE c.imagenes_id = ?
        ORDER BY c.fecha DESC`,
       [imagenId]
     );
