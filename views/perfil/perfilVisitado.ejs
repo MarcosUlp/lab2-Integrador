@@ -57,6 +57,8 @@
                               <div class="imagen-con-comentarios">
                                 <img src="<%= img.archivo %>" alt="Imagen del álbum" width="150" />
 
+                                <pre><%= JSON.stringify(img, null, 2) %></pre>
+
                                 <!-- Mostrar comentarios -->
                                 <% if (img.comentarios && img.comentarios.length> 0) { %>
                                   <div class="comentarios">
