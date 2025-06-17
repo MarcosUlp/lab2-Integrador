@@ -146,7 +146,7 @@ module.exports = {
       }
 
       for (const img of imagenes) {
-        const comentarios = await comentarioModel.obtenerComentariosPorImagen(img.imagen_id);
+        const comentarios = await comentarioModel.obtenerComentariosPorImagen(img.imagenes_id);
         img.comentarios = comentarios;
       }
 
