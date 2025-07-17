@@ -1,0 +1,28 @@
+<h2>Editar Perfil</h2>
+<form action="/editarPerfil" method="POST">
+  <label>Nombre de usuario:</label>
+  <input type="text" name="username" value="<%= usuario.username %>" required><br>
+
+  <label>Email:</label>
+  <input type="email" name="email" value="<%= usuario.email %>" required><br>
+
+  <label>Nombre completo:</label>
+  <input type="text" name="nombre_completo" value="<%= usuario.nombre_completo || '' %>"><br>
+
+  <label>Biografía:</label>
+  <textarea name="biografia"><%= usuario.biografia || '' %></textarea><br>
+
+  <label>Intereses:</label>
+  <input type="text" name="intereses" value="<%= usuario.intereses || '' %>"><br>
+
+  <label>Ubicación:</label>
+  <input type="text" name="ubicacion" value="<%= usuario.ubicacion || '' %>"><br>
+
+  <label>Teléfono:</label>
+  <input type="text" name="telefono" value="<%= usuario.telefono || '' %>"><br>
+
+  <label>Nueva contraseña (opcional):</label>
+  <input type="password" name="nueva_contraseña"><br>
+
+  <button type="submit">Guardar cambios</button>
+</form>

@@ -27,7 +27,7 @@ module.exports = {
     );
     return rows;
   },
-  obtenerPorUsuarioId: async (usuarioId) => {
+  obtenerPorUsuarioId: async (usuarioId) => { //repetido
     // Obtener los álbumes
     const [albumes] = await pool.query(
       'SELECT * FROM albumes WHERE usuario_id = ?',

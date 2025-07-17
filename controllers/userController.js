@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const usuarioModel = require('../models/usuario');
 const solicitudModel = require('../models/solicitudesAmistad');
 const albumModel = require('../models/album');
@@ -6,77 +5,6 @@ const imagenModel = require('../models/imagen')
 const seguidoresModel = require('../models/solicitudesAmistad');
 const comentarioModel = require('../models/comentarios');
 module.exports = {
-  // Mostrar formulario de registro
-  showRegister: (req, res) => {
-    res.render('register');
-  },
-
-  // Procesar registro
-  register: async (req, res) => {
-    const { nombre, email, password } = req.body;
-
-    try {
-      const existingUser = await usuarioModel.findByEmail(email);
-      if (existingUser) {
-        return res.render('register', { error: 'El email ya está registrado' });
-      }
-
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      await usuarioModel.create({
-        nombre,
-        email,
-        password: hashedPassword,
-        rol: 'usuario'
-      });
-
-      res.redirect('/login');
-    } catch (err) {
-      console.error('Error al registrar usuario:', err);
-      res.render('register', { error: 'Error del servidor. Intente más tarde.' });
-    }
-  },
-
-  // Mostrar formulario de login
-  showLogin: (req, res) => {
-    res.render('login');
-  },
-
-  // Procesar login
-  login: async (req, res) => {
-    const { email, password } = req.body;
-
-    try {
-      const user = await usuarioModel.findByEmail(email);
-
-      if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.render('login', { error: 'Correo o contraseña inválidos' });
-      }
-
-      req.session.user = {
-        id: user.usuario_id,
-        username: user.username,
-        email: user.email,
-        rol: user.rol,
-        foto_perfil: user.foto_perfil,
-        foto_portada: user.foto_portada
-      };
-      console.log('mi user despues del login ', user);
-      console.log('Login exitoso. Redirigiendo a /inicio...');
-
-      res.redirect('/inicio');
-    } catch (err) {
-      console.error('Error al iniciar sesión:', err);
-      res.render('login', { error: 'Error del servidor. Intente más tarde.' });
-    }
-  },
-
-  // Cerrar sesión
-  logout: (req, res) => {
-    req.session.destroy(() => {
-      res.redirect('/login');
-    });
-  },
   // Subir imagen de perfil
   subirPerfil: async (req, res) => {
     try {
@@ -91,7 +19,6 @@ module.exports = {
       res.status(500).send('Error al subir la imagen.');
     }
   },
-
   // Subir imagen de portada
   subirPortada: async (req, res) => {
     try {
@@ -105,24 +32,7 @@ module.exports = {
       res.status(500).send('Error al subir la imagen.');
     }
   },
-
-  buscar: async (req, res) => {
-    const termino = req.query.q;
-    if (!termino) {
-      return res.redirect('/inicio');
-    }
-    try {
-      const resultados = await usuarioModel.barraBusqueda(termino);
-      res.render('perfil/buscar', {
-        user: req.session.user,
-        resultados,
-        termino
-      });
-    } catch (error) {
-      console.error('Error en la búsqueda:', error);
-      res.status(500).send('Error al buscar usuarios');
-    }
-  },
+  //visitar Usuario
   perfilVisitado: async (req, res) => {
     const idPerfilVisitado = req.params.id;
     const usuarioLogueado = req.session.user;

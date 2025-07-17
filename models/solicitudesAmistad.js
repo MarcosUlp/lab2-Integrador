@@ -17,6 +17,7 @@ module.exports = {
     );
     return rows.length > 0;
   },
+
   aceptarSolicitud: async (solicitudId) => {
     await pool.query(
       `UPDATE solicitudes_seguimiento SET estado = "aceptado" WHERE solicitudes_id = ?`,
@@ -36,6 +37,7 @@ module.exports = {
     );
     return rows.length > 0;
   },
+
   obtenerEstadoRelacion: async (usuario1, usuario2) => {
     const [rows] = await pool.query(
       `SELECT estado FROM solicitudes_seguimiento 
@@ -54,6 +56,7 @@ module.exports = {
       [solicitudId]
     );
   },
+
   //con esta vamos a obtener todas las solicitudes pendientes para un usuario
   obtenerSolicitudesPendientes: async (usuarioId) => {
     const [rows] = await pool.query(
@@ -66,6 +69,7 @@ module.exports = {
     );
     return rows;
   },
+
   //esto es para obtener una solicitud especifica para validar autorizacion
   obtenerSolicitudPorIdYReceptor: async (solicitudId, receptorId) => {
     const [rows] = await pool.query(
@@ -74,12 +78,14 @@ module.exports = {
     );
     return rows[0];
   },
+
   crearRelacionSeguimiento: async (seguidorId, seguidoId) => {
     await pool.query(
       'INSERT INTO seguidores (seguidor_id, seguido_id, fecha_inicio) VALUES (?, ?, NOW())',
       [seguidorId, seguidoId]
     );
   },
+
   //con esta vamos a obtener una lista con todos la lista de amigos de un usuario
   obtenerListaDeAmigos: async (usuarioId) => {
     const [rows] = await pool.query(
@@ -91,6 +97,7 @@ module.exports = {
     );
     return rows;
   },
+  
   sigueA: async (usuarioA, usuarioB) => {
     const [rows] = await pool.query(
       'SELECT 1 FROM seguidores WHERE seguidor_id = ? AND seguido_id = ?',

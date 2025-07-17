@@ -1,4 +1,5 @@
 const Solicitud = require('../models/solicitudesAmistad');
+const notificaciones = require('../models/notificaciones');
 
 const enviarSolicitud = async (req, res) => {
   const emisorId = req.session.user.id;
@@ -14,6 +15,14 @@ const enviarSolicitud = async (req, res) => {
   }
 
   await Solicitud.enviarSolicitud(emisorId, receptorId);
+
+  //crear notificacion tipo solicitud
+  await notificaciones.crear({
+    de_usuario_id: emisorId,
+    para_usuario_id: receptorId,
+    tipo: 'solicitud',
+    imagen_id: null
+  });
 
   if(req.headers['x-requested-with']==='XMLHttpRequest'){
     return res.status(200).json({mensaje: 'Solicitud enviada'})

@@ -1,4 +1,5 @@
 const Comentario = require('../models/comentarios');
+const notificaciones = require('../models/notificaciones');
 
 exports.comentarImagen = async (req, res) => {
   const usuarioId = req.session.user.id;
@@ -11,7 +12,20 @@ exports.comentarImagen = async (req, res) => {
 
   try {
     await Comentario.agregarComentario(usuarioId, imagenId, texto);
+    const imagen = await Comentario.obtenerUsuarioDeImagen(imagenId);
+    const receptorId = imagen.usuario_id;
+
+    if (receptorId !== usuarioId) {
+      //crea notificacion tipo comentario
+      await notificaciones.crear({
+        de_usuario_id: usuarioId,
+        para_usuario_id: receptorId,
+        tipo: 'comentario',
+        imagen_id: imagenId
+      });
+    }
     res.redirect(req.get('referer')); // supuestamente vuelva a la misma pag
+
   } catch (err) {
     console.error(err);
     res.status(500).send('Error al comentar.');

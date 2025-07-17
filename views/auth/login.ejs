@@ -7,7 +7,7 @@
     </p>
     <% } %>
       <main class="login-container">
-        <form action="/usuarios/login" method="POST">
+        <form action="/auth/login" method="POST">
           <label>Email:</label>
           <input type="email" name="email" placeholder="email" required><br>
 
@@ -17,7 +17,7 @@
           <button type="submit">Ingresar</button>
         </form>
         <div class="extra-options">
-          <p><a href="/register">tienes cuenta?</a></p>
+          <p><a href="/auth/register">tienes cuenta?</a></p>
           <p><a href="/explorar">Ingresa como invitado</a></p>
         </div>
       </main>
