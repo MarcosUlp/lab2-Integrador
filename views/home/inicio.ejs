@@ -1,28 +1,33 @@
+<h2>INICIO</h2>
+<form method="get" action="/inicio/albumes">
+  <input type="text" name="titulo" placeholder="Buscar por nombre de álbum" value="<%= query.titulo || '' %>">
 
-<main class="inicio-layout">
-  <!-- 🔍 Barra superior -->
-   
-  <!-- 🖼️ Zona central -->
-  <div class="zona-central">
-    <!-- 📤 Subida de álbum -->
-    
+  <fieldset>
+    <legend>Filtrar por etiquetas</legend>
+    <% etiquetasDisponibles.forEach(etiqueta => { %>
+      <label>
+        <input type="checkbox" name="etiquetas" value="<%= etiqueta.etiquetas_id %>"
+          <%= (query.etiquetas && (Array.isArray(query.etiquetas) ? query.etiquetas.includes(etiqueta.etiquetas_id.toString()) : query.etiquetas === etiqueta.etiquetas_id.toString())) ? 'checked' : '' %> >
+        <%= etiqueta.nombre %>
+      </label>
+    <% }); %>
+  </fieldset>
 
-    <!-- 📚 Feed de álbumes -->
-    <section class="feed-albumes">
-      <h3>Este es el inicio, proximamente mostrar albumes de usuarios que sigo:</h3>
-      <div class="galeria">
-        <% if (albumes.length === 0) { %>
-          <p>No tenés álbumes aún.</p>
-        <% } else { %>
-          <% albumes.forEach(album => { %>
-            <div class="album">
-              <h4><%= album.titulo %></h4>
-              <!-- Aquí podrías agregar imágenes miniatura si querés -->
-              <p>ID: <%= album.albumes_id %></p>
-            </div>
-          <% }) %>
-        <% } %>
+  <button type="submit">Buscar</button>
+</form>
+
+<hr>
+
+<% if (resultados.length > 0) { %>
+  <div class="albumes-container">
+    <% resultados.forEach(album => { %>
+      <div class="album-card">
+        <h3><%= album.titulo %></h3>
+        <p>De: <%= album.username %></p>
+        <a href="/albumes/<%= album.album_id %>">Ver álbum</a>
       </div>
-    </section>
+    <% }); %>
   </div>
-</main>
+<% } else if (Object.keys(query).length > 0) { %>
+  <p>No se encontraron álbumes con esa búsqueda.</p>
+<% } %>

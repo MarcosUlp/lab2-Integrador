@@ -1,23 +1,40 @@
 <main class="perfil">
-  <% if (user.username) { %>
-    <h2><%= user.username %></h2>
-  <% } else { %>
-    <p>No tienes username</p>
-  <% } %>
+  <section class="perfil-header">
+    <div class="perfil-avatar">
+      <% if (user.foto_perfil) { %>
+        <img src="<%= user.foto_perfil %>" alt="Foto de perfil">
+        <% } else { %>
+          <div class="avatar-placeholder">👤</div>
+          <% } %>
+    </div>
 
-  <!-- FOTO DE PORTADA -->
-  <div class="portada">
-    <form action="/usuarios/subir-portada" method="POST" enctype="multipart/form-data">
-      <input type="file" name="foto_portada" accept="image/*" required>
-      <button type="submit">Cambiar foto de portada</button>
-    </form>
+    <div class="perfil-info">
+      <h2>
+        <%= user.username %>
+      </h2>
+      <p class="bio">
+        📌 Intereses: cerámica, macramé, textiles <br>
+        📝 “Crear es mi forma de respirar.” <br>
+        📍 Rosario, Santa Fe
+      </p>
+    </div>
 
-    <% if (user.foto_portada) { %>
-      <img src="<%= user.foto_portada %>" alt="Portada">
-    <% } else { %>
-      <p>No tienes foto de portada</p>
-    <% } %>
-  </div>
+  </section>
+
+
+  <!-- FOTO DE PORTADA 
+        <div class="portada">
+          <form action="/usuarios/subir-portada" method="POST" enctype="multipart/form-data">
+            <input type="file" name="foto_portada" accept="image/*" required>
+            <button type="submit">Cambiar foto de portada</button>
+          </form>
+
+          <% if (user.foto_portada) { %>
+            <img src="<%= user.foto_portada %>" alt="Portada">
+            <% } else { %>
+              <p>No tienes foto de portada</p>
+              <% } %>
+        </div>-->
 
   <!-- FOTO DE PERFIL -->
   <div class="foto-perfil">
@@ -28,9 +45,9 @@
 
     <% if (user.foto_perfil) { %>
       <img src="<%= user.foto_perfil %>" alt="Foto de perfil">
-    <% } else { %>
-      <p>No tienes foto de perfil</p>
-    <% } %>
+      <% } else { %>
+        <p>No tienes foto de perfil</p>
+        <% } %>
   </div>
 
   <form action="/solicitudes/pendientes" method="GET">
@@ -39,66 +56,109 @@
 
   <!-- SUBIR ÁLBUM -->
   <section class="subir-album">
-    <h2>Subir Álbum</h2>
+    <h2>🎨 Subí un nuevo álbum</h2>
+
     <form action="/imagenes/subiralbum" method="POST" enctype="multipart/form-data">
       <input type="text" name="titulo" placeholder="Nombre del álbum" required>
+
       <div class="dropzone">
-        <p>⬇️ Arrastrar o seleccionar imágenes</p>
+        <p>⬇️ Arrastrá o seleccioná imágenes</p>
         <input type="file" name="imagenes" multiple accept="image/*" required>
       </div>
-      <button type="submit">➕ Subir album</button>
+
+      <label class="publico-checkbox">
+        <input type="checkbox" name="modo_publico" value="1">
+        Hacer álbum público 🌍
+      </label>
+
+      <div class="etiquetas-checkboxes">
+        <h3>🧵 Elegí etiquetas:</h3>
+        <div class="checkbox-etiquetas">
+          <% etiquetas.forEach(etiqueta=> { %>
+            <label class="checkbox-tag">
+              <input type="checkbox" name="etiquetas" value="<%= etiqueta.etiquetas_id %>">
+              <%= etiqueta.nombre %>
+            </label>
+            <% }) %>
+        </div>
+      </div>
+
+      <button type="submit">➕ Subir álbum</button>
     </form>
   </section>
+
 
   <!-- ALBUMES CON IMÁGENES Y COMENTARIOS -->
   <section class="albumes-usuario">
     <h2>Mis álbumes</h2>
 
-    <% if (albumes.length === 0) { %>
+    <% if (albumes.length===0) { %>
       <p>No has creado álbumes todavía.</p>
-    <% } else { %>
-      <% albumes.forEach(album => { %>
-        <div class="album">
-          <h3><%= album.titulo %></h3>
+      <% } else { %>
+        <% albumes.forEach(album=> { %>
 
-          <% const imagenesAlbum = imagenes.filter(img => img.albumes_id === album.albumes_id); %>
+          <div class="album">
 
-          <% if (imagenesAlbum.length > 0) { %>
-            <div class="imagenes-album-grid">
-              <% imagenesAlbum.forEach(img => { %>
-                <div class="imagen-con-comentarios">
-                  <img src="<%= img.archivo %>" alt="Imagen del álbum" class="imagen-album" />
+            <h3>
+              <%= album.titulo %>
+            </h3>
+            <% if (album.modo_publico) { %>
+              <p class="album-publico">🌍 album publico</p>
+              <% } %>
+                <!-- Mostrar etiquetas -->
+                <% const etiquetas=etiquetasPorAlbum[album.albumes_id] || []; %>
+                  <% if (etiquetas.length> 0) { %>
+                    <p class="etiquetas">
+                      <% etiquetas.forEach(et=> { %>
+                        <span class="etiqueta">#<%= et %></span>
+                        <% }) %>
+                    </p>
+                    <% } else { %>
+                      <p class="sin-etiquetas">Sin etiquetas</p>
+                      <% } %>
+                        <% const imagenesAlbum=imagenes.filter(img=> img.albumes_id === album.albumes_id); %>
 
-                  <% if (img.comentarios && img.comentarios.length > 0) { %>
-                    <div class="comentarios">
-                      <% img.comentarios.forEach(c => { %>
-                        <p>
-                          <% if (c.foto_perfil) { %>
-                            <img src="<%= c.foto_perfil %>" alt="Foto de perfil" class="comentario-avatar">
-                          <% } else { %>
-                            <span>🧑</span>
-                          <% } %>
-                          <strong><%= c.username %>:</strong> <%= c.contenido %>
-                        </p>
-                      <% }) %>
-                    </div>
-                  <% } else { %>
-                    <p class="sin-comentarios">Sin comentarios.</p>
-                  <% } %>
+                          <% if (imagenesAlbum.length> 0) { %>
+                            <div class="imagenes-album-grid">
+                              <% imagenesAlbum.forEach(img=> { %>
+                                <div class="imagen-con-comentarios">
+                                  <img src="<%= img.archivo %>" alt="Imagen del álbum" class="imagen-album" />
 
-                  <!-- Formulario para comentar -->
-                  <form action="/comentar/<%= img.imagenes_id %>" method="POST" class="form-comentario">
-                    <input type="text" name="texto" placeholder="Escribí un comentario" required>
-                    <button type="submit">Comentar</button>
-                  </form>
-                </div>
-              <% }) %>
-            </div>
-          <% } else { %>
-            <p>Álbum sin imágenes.</p>
-          <% } %>
-        </div>
-      <% }) %>
-    <% } %>
+                                  <% if (img.comentarios && img.comentarios.length> 0) { %>
+                                    <div class="comentarios">
+                                      <% img.comentarios.forEach(c=> { %>
+                                        <p>
+                                          <% if (c.foto_perfil) { %>
+                                            <img src="<%= c.foto_perfil %>" alt="Foto de perfil"
+                                              class="comentario-avatar">
+                                            <% } else { %>
+                                              <span>🧑</span>
+                                              <% } %>
+                                                <strong>
+                                                  <%= c.username %>:
+                                                </strong>
+                                                <%= c.contenido %>
+                                        </p>
+                                        <% }) %>
+                                    </div>
+                                    <% } else { %>
+                                      <p class="sin-comentarios">Sin comentarios.</p>
+                                      <% } %>
+
+                                        <!-- Formulario para comentar -->
+                                        <form action="/comentar/<%= img.imagenes_id %>" method="POST"
+                                          class="form-comentario">
+                                          <input type="text" name="texto" placeholder="Escribí un comentario" required>
+                                          <button type="submit">Comentar</button>
+                                        </form>
+                                </div>
+                                <% }) %>
+                            </div>
+                            <% } else { %>
+                              <p>Álbum sin imágenes.</p>
+                              <% } %>
+          </div>
+          <% }) %>
+            <% } %>
   </section>
 </main>

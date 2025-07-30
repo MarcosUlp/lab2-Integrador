@@ -8,11 +8,11 @@ module.exports = {
     const { nombre, email, password } = req.body;
     try {
       const existingUser = await authModel.findByEmail(email);
-      if (existingUser) return res.render('register', { error: 'El email ya está registrado' });
+      if (existingUser) return res.render('auth/register', { error: 'El email ya está registrado' });
 
       const hashedPassword = await bcrypt.hash(password, 10);
       await authModel.create({ nombre, email, password: hashedPassword, rol: 'usuario' });
-      res.redirect('auth/login');
+      res.redirect('/auth/login');
     } catch (err) {
       console.error('Error al registrar usuario:', err);
       res.render('auth/register', { error: 'Error del servidor. Intente más tarde.' });
@@ -24,9 +24,12 @@ module.exports = {
   login: async (req, res) => {
     const { email, password } = req.body;
     try {
+      if (!email || !password) {
+        return res.render('auth/login', { error: 'Por favor completá todos los campos.' });
+      }
       const user = await authModel.findByEmail(email);
       if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.render('login', { error: 'Correo o contraseña inválidos' });
+        return res.render('auth/login', { error: 'Correo o contraseña inválidos' });
       }
 
       req.session.user = {

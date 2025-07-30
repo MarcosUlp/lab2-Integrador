@@ -1,14 +1,47 @@
 <header class="topbar">
-  <div class="logo"><a href="/inicio">MyApp</a></div>
+  <div class="logo">
+    <a href="/inicio">MyApp</a>
+  </div>
 
   <form action="/buscar" method="get" class="search-form">
     <input type="text" name="q" placeholder="Buscar álbumes o usuarios..." />
   </form>
 
   <div class="nav-icons">
-    <a href="/notificaciones" title="Notificaciones"><i class="icon-bell">🔔</i></a>
+    <div class="notificaciones-wrapper" style="position: relative;">
+      <button id="btn-notificaciones" class="noti-btn" title="Notificaciones">
+        🔔
+      </button>
+
+      <!-- Dropdown de notificaciones -->
+      <div id="dropdown-notificaciones"
+           class="notificaciones-dropdown"
+           style="
+             display: none;
+             position: absolute;
+             top: 35px;
+             right: 0;
+             background: white;
+             border: 1px solid #ccc;
+             border-radius: 8px;
+             width: 300px;
+             max-height: 400px;
+             overflow-y: auto;
+             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+             z-index: 999;">
+        
+        <!-- Se inyecta el contenido con JS -->
+        <div id="notificaciones-container" style="padding: 10px;">
+          <p>Cargando...</p>
+        </div>
+
+        <div style="text-align: center; padding: 10px;">
+          <a href="/notificaciones/listado">Ver todas</a>
+        </div>
+      </div>
+    </div>
+
     <a href="/perfil" title="Perfil"><i class="icon-user">👤</i></a>
     <a href="#" id="menu-hamburguesa" class="menu-hamburguesa" title="Menú"><i class="icon-menu">☰</i></a>
   </div>
-  
 </header>

@@ -15,14 +15,18 @@ module.exports = {
        FROM comentarios c
        JOIN usuarios u ON c.usuario_id = u.usuario_id
        WHERE c.imagenes_id = ?
-       ORDER BY c.fecha DESC`,
+       ORDER BY c.fecha_comentario DESC`,
       [imagenId]
     );
     return rows;
   },
-  obtenerUsuarioDeImagen: async (imagenId) => {
+
+obtenerUsuarioDeImagen: async (imagenId) => {
   const [rows] = await pool.query(
-    'SELECT usuario_id FROM imagenes WHERE imagen_id = ?',
+    `SELECT a.usuario_id
+     FROM imagenes i
+     JOIN albumes a ON i.albumes_id = a.albumes_id
+     WHERE i.imagenes_id = ?`,
     [imagenId]
   );
   return rows[0]; // Devuelve un objeto con usuario_id

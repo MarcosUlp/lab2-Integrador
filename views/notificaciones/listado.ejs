@@ -1,0 +1,22 @@
+<h2>Notificaciones</h2>
+<% if (notificaciones.length === 0) { %>
+  <p>No tenés notificaciones aún.</p>
+<% } else { %>
+  <% notificaciones.forEach(n => { %>
+    <div class="notificacion-detalle">
+      <img src="<%= n.foto_perfil || '/imagenes/default.png' %>" class="pfp-mini">
+      <strong><%= n.username %></strong>
+      <% if (n.tipo === 'comentario') { %>
+        comentó: "<%= n.texto %>"
+      <% } else if (n.tipo === 'solicitud') { %>
+        te envió una solicitud.
+        <form method="POST" action="/solicitudes/aceptar/ <%= n.solicitud_id %>">
+          <input type="hidden" name="solicitud_id" value="<%= n.relacion_id %>">
+          <button type="submit">Aceptar</button>
+          <button formaction="/solicitudes/rechazar/ <%= n.solicitud_id%>" type="submit">Rechazar</button>
+        </form>
+      <% } %>
+      <br><small><%= new Date(n.fecha).toLocaleString() %></small>
+    </div>
+  <% }); %>
+<% } %>

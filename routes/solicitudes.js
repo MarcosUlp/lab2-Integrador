@@ -16,5 +16,7 @@ router.post('/aceptar/:id', requireLogin, solicitudController.aceptarSolicitud);
 //rechazar solicitud
 router.post('/rechazar/:id', requireLogin, solicitudController.rechazarSolicitud);
 
+router.post('/aceptar', requireLogin, solicitudController.aceptarSolicitudDesdeFormulario);
 
+router.post('/rechazar', requireLogin, solicitudController.aceptarSolicitudDesdeFormulario);
 module.exports = router;

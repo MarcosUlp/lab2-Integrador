@@ -14,7 +14,8 @@ exports.editarPerfilForm = async (req, res) => {
 };
 
 exports.actualizarPerfil = async (req, res) => {
-  const usuarioId = req.session.userId;
+  const usuarioId = req.session.user.id;
+  console.log("POST /editarPerfil ejecutado", req.body);
   const {
     username,
     email,

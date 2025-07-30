@@ -37,6 +37,9 @@ module.exports = {
     const idPerfilVisitado = req.params.id;
     const usuarioLogueado = req.session.user;
 
+    console.log("req.session.user:", req.session.user); // ¿undefined?
+    console.log("Perfil Visitado", idPerfilVisitado);
+
     if (parseInt(idPerfilVisitado) === usuarioLogueado.id) {
       return res.redirect('/perfil'); // Redirige a su propio perfil
     }
@@ -45,13 +48,13 @@ module.exports = {
 
       let albumes = [];
       let imagenes = [];
-      const perfil = await usuarioModel.buscarPorId(idPerfilVisitado);
+      const perfil = await usuarioModel.obtenerPorId(idPerfilVisitado);
       const yaHaySolicitud = await solicitudModel.yaHayRelacion(usuarioLogueado.id, idPerfilVisitado);
       const estadoRelacion = await solicitudModel.obtenerEstadoRelacion(usuarioLogueado.id, idPerfilVisitado);
       const sigue = await seguidoresModel.sigueA(usuarioLogueado.id, idPerfilVisitado);
 
       if (sigue) {
-        albumes = await albumModel.obtenerPorUsuarioId(idPerfilVisitado);
+        albumes = await albumModel.obtenerPorUsuario(idPerfilVisitado);
         imagenes = await imagenModel.obtenerImagenesPorUsuario(idPerfilVisitado);
       }
 

@@ -68,3 +68,80 @@
   font-style: italic;
   color: #888;
 }
+.album-publico {
+  font-size: 0.9em;
+  color: #2196f3;
+  font-weight: bold;
+  margin-top: 5px;
+}
+/*agregado*/
+.perfil-header {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+  gap: 15px;
+}
+
+.perfil-avatar img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #4caf50;
+}
+
+.avatar-placeholder {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: #555;
+}
+
+.perfil-info h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.bio {
+  font-size: 14px;
+  color: #666;
+  margin-top: 5px;
+  line-height: 1.4;
+}
+
+.publico-checkbox {
+  margin: 10px 0;
+  display: inline-block;
+  font-weight: 500;
+}
+
+.checkbox-etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.checkbox-tag {
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.checkbox-tag input {
+  transform: scale(1.2);
+}

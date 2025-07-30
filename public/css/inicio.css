@@ -121,3 +121,33 @@
   border-radius: 6px;
   text-align: center;
 }
+.buscador-albumes {
+  padding: 1em;
+  background-color: #f7f7f7;
+  margin-bottom: 2em;
+}
+
+.checkbox-etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  margin-top: 1em;
+}
+
+.albumes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2em;
+}
+
+.album-card {
+  padding: 1em;
+  border: 1px solid #ccc;
+  border-radius: 1em;
+  background-color: #fff;
+}
+
+.album-card img {
+  max-width: 100%;
+  border-radius: 0.5em;
+}

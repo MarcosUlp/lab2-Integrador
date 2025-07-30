@@ -166,7 +166,25 @@ extra (min 2)              modo vitrina, denuncias
 **SEGURIDAD COOKIES Y AUTENTICACION**
 - Autenticacion: El sistema incluye un middleware llamado auth.js, protegiendo las rutas privadas
   basicamente se usa para verificar si el usuario esta autenticado antes de acceder a cierta rutas.
+  
+  
 
 - middleware: multer.js: este gestiona la subida de archivos (imágenes), evita ataques de archivos malisiosos
 
-- 
+**PROPUESTA DE ORDEN PARA DIA MARTES**
+
+- Agregar columna publico en tabla albumes.
+
+- Modificar form EJS de creación de álbum con checkbox.
+
+- Ajustar modelo y controlador para guardar el valor publico.
+
+- Corregir búsqueda para que solo devuelva álbumes públicos.
+
+- Crear ruta /album/:id y vista album.ejs.<<<<<con esto tengo que seguir horita>>>>>
+
+- Implementar verificación de acceso al álbum.
+
+- Crear la ruta /explorar para ver todos los álbumes públicos (extra).
+
+- Luego, agregar estadísticas en el perfil.
