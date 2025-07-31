@@ -6,6 +6,36 @@ const path = require('path');
 const session = require('express-session');
 const expressLayouts = require('express-ejs-layouts');
 
+//app para iniciar el servidor
+const http = require('http');
+const { Server } = require('socket.io');
+const server = http.createServer(app);
+const io = new Server(server);
+//guardar istancia para usar en otros archivos
+const socketInstance = require('./utils/socketInstance');
+socketInstance.setIo(io);
+//y aca manejo los soket
+
+const socketStore = require('./utils/socketStore');
+
+
+io.on('connection', (socket) => {
+  console.log('Usuario conectado ', socket.id );
+
+  // Escuchá un evento para registrar al usuario conectado
+  socket.on('registrarUsuario', (userId) => {
+     console.log('Registrando usuario:', userId, 'con socket:', socket.id);
+    console.log(`Usuario ${userId} registrado en socket ${socket.id}`);
+    socketStore.registrarSocket(userId, socket.id);
+  });
+  socket.on('disconnect', () => {
+
+    console.log('🔴 Usuario desconectado', socket.id);
+    socketStore.eliminarSocket(socket.id);
+  });
+});
+
+
 // Cargar rutas
 const imagenesRoutes = require('./routes/imagenes');
 const inicioRoutes = require('./routes/inicio');
@@ -18,12 +48,17 @@ const userRoutes = require('./routes/userRoutes');
 const editarPerfilRoutes = require('./routes/editarPerfil');
 const contarNotificaciones = require('./middlewares/notificaciones');//middleware del contador de notificaciones
 const notificacionesRoutes = require('./routes/notificaciones');//ruta para las notificaciones
+const albumRoutes = require('./routes/album');//ruta para visitar album especifico
+const explorarRoutes = require('./routes/explorar');//ruta para visitantes
+
+
 const PORT = process.env.PORT || 3000;
 
 
 // Configuración del motor de vistas
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+//guardar io en app
 
 // Layouts
 app.use(expressLayouts);
@@ -43,6 +78,15 @@ app.use(session({
     sameSite: 'lax'
   }
 }));
+app.use((req, res, next) => {
+  if (req.session && req.session.user) {
+    res.locals.user = req.session.user;
+  } else {
+    res.locals.user = null;
+  }
+  next();
+});
+
 
 app.use(contarNotificaciones);// contador de notificaciones
 
@@ -61,6 +105,10 @@ app.use('/solicitudes', solicitudesRoutes);  // solicitudes de seguimiento
 app.use('/comentar', comentarioRoutes);      // comentarios
 app.use('/usuarios', userRoutes);            // foto perfil, portada y ver perfil de otro usuario   
 app.use('/editarPerfil', editarPerfilRoutes);
+app.use('/album', albumRoutes);
+app.use('/explorar', explorarRoutes);
+
+
 
 
 // Redirecciones base
@@ -75,6 +123,9 @@ app.use((err, req, res, next) => {
 });
 
 // Iniciar servidor
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
+
+// probando para socket
+

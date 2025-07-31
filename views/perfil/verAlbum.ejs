@@ -1,0 +1,53 @@
+<main class="ver-album">
+  <section class="album-header">
+    <h2>Título: <%= album.titulo %>
+    </h2>
+    <p>Álbum de <strong>
+        <%= usuarioDueño.username %>
+      </strong></p>
+    <% if (usuarioDueño.foto_perfil) { %>
+      <img src="<%= usuarioDueño.foto_perfil %>" alt="Foto de perfil" class="avatar-album">
+      <% } %>
+        <p>
+          <%= album.descripcion || "Este álbum no tiene descripción aún." %>
+        </p>
+  </section>
+
+
+  <section class="imagenes-album">
+    <% if (imagenes.length> 0) { %>
+      <% imagenes.forEach(img=> { %>
+        <div class="imagen-con-comentarios">
+          <img src="<%= img.archivo %>" class="imagen-album" />
+
+          <% if (img.comentarios.length> 0) { %>
+            <div class="comentarios">
+              <% img.comentarios.forEach(c=> { %>
+                <p>
+                  <% if (c.foto_perfil) { %>
+                    <img src="<%= c.foto_perfil %>" class="comentario-avatar" />
+                    <% } %>
+                      <strong>
+                        <%= c.username %>:
+                      </strong>
+                      <%= c.contenido %>
+                </p>
+                <% }) %>
+            </div>
+            <% } else { %>
+              <p class="sin-comentarios">Sin comentarios.</p>
+              <% } %>
+
+                <% if (user) { %>
+                  <form action="/comentar/<%= img.imagenes_id %>" method="POST" class="form-comentario">
+                    <input type="text" name="texto" placeholder="Escribí un comentario" required />
+                    <button type="submit">Comentar</button>
+                  </form>
+                  <% } %>
+        </div>
+        <% }) %>
+          <% } else { %>
+            <p>Este álbum no tiene imágenes aún.</p>
+            <% } %>
+  </section>
+</main>

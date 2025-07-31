@@ -48,6 +48,7 @@ module.exports = {
 
       let albumes = [];
       let imagenes = [];
+
       const perfil = await usuarioModel.obtenerPorId(idPerfilVisitado);
       const yaHaySolicitud = await solicitudModel.yaHayRelacion(usuarioLogueado.id, idPerfilVisitado);
       const estadoRelacion = await solicitudModel.obtenerEstadoRelacion(usuarioLogueado.id, idPerfilVisitado);
@@ -55,6 +56,9 @@ module.exports = {
 
       if (sigue) {
         albumes = await albumModel.obtenerPorUsuario(idPerfilVisitado);
+        imagenes = await imagenModel.obtenerImagenesPorUsuario(idPerfilVisitado);
+      } else {
+        albumes = await albumModel.obtenerPublicosPorUsuario(idPerfilVisitado);
         imagenes = await imagenModel.obtenerImagenesPorUsuario(idPerfilVisitado);
       }
 
@@ -64,9 +68,7 @@ module.exports = {
       }
 
 
-      console.log(JSON.stringify(albumes, null, 2));
-      console.log(JSON.stringify(imagenes, null, 2));
-      
+
       res.render('perfil/perfilVisitado', {
         user: usuarioLogueado,
         perfil,

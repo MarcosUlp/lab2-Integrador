@@ -1,51 +1,57 @@
 <main class="perfil">
-
-  <!-- FOTO DE PORTADA -->
-  <div class="portada">
-
-    <% if (perfil.foto_portada) { %>
-      <img src="<%= perfil.foto_portada %>" alt="Portada">
+  <!-- ENCABEZADO DEL PERFIL VISITADO -->
+  <section class="perfil-header">
+    <div class="perfil-avatar">
+      <% if (perfil.foto_perfil) { %>
+        <img src="<%= perfil.foto_perfil %>" alt="Foto de perfil">
       <% } else { %>
-        <p>No tienes foto de portada</p>
-        <% } %>
-  </div>
+        <div class="avatar-placeholder">👤</div>
+      <% } %>
+    </div>
 
-  <!-- FOTO DE PERFIL -->
-  <div class="foto-perfil">
-    <% if (perfil.foto_perfil) { %>
-      <img src="<%= perfil.foto_perfil %>" alt="Foto de perfil">
-      <% } else { %>
-        <p>No tienes foto de perfil</p>
-        <% } %>
-  </div>
-  <h2>
-    <%= perfil.username %>
-  </h2>
+    <div class="perfil-info">
+      <h2><%= perfil.username %></h2>
+      <p class="bio">
+        📌 Intereses: cerámica, macramé, textiles <br>
+        📝 “Crear es mi forma de respirar.” <br>
+        📍 Rosario, Santa Fe
+      </p>
+    </div>
+  </section>
+
   <!-- BOTÓN DE SOLICITUD DE AMISTAD -->
-  <% if (!sigue) { %>
-    <form id="formSolicitud" action="/solicitudes/enviar/<%= perfil.usuario_id %>" method="POST">
-      <button id="botonSolicitud" type="submit">Enviar solicitud de amistad</button>
-    </form>
-    <% } else if (sigue==='pendiente' ) { %>
-      <p id="estadoSolicitud">Solicitud enviada</p>
-      <% } else if (sigue==='aceptado' ) { %>
-        <p id="estadoSolicitud">Ya son amigos</p>
-        <% } %>
+  <div class="acciones-usuario">
+    <% if (!sigue) { %>
+      <form id="formSolicitud" action="/solicitudes/enviar/<%= perfil.usuario_id %>" method="POST" class="form-accion">
+        <button id="botonSolicitud" type="submit" class="btn-accion">🤝 Enviar solicitud de amistad</button>
+      </form>
+    <% } else if (sigue === 'pendiente') { %>
+      <p id="estadoSolicitud">📨 Solicitud enviada</p>
+    <% } else if (sigue === 'aceptado') { %>
+      <p id="estadoSolicitud">✅ Ya son amigos</p>
+    <% } %>
+  </div>
 
-          <!-- if corrobora que sea seguidor de esta cuenta visitada -->
-<% if (sigue) { %>
+  <!-- ÁLBUMES -->
   <section class="albumes">
     <h3>Álbumes de <%= perfil.username %></h3>
 
-    <% if (albumes.length === 0) { %>
-      <p>Este usuario no tiene álbumes aún.</p>
+    <% 
+      const mostrarAlbumes = sigue === 'aceptado' || albumes.some(a => a.modo_publico); 
+      const albumesFiltrados = albumes.filter(a => sigue === 'aceptado' || a.modo_publico);
+    %>
+
+    <% if (!mostrarAlbumes) { %>
+      <p>Solo los amigos pueden ver los álbumes.</p>
+    <% } else if (albumesFiltrados.length === 0) { %>
+      <p>Este usuario no tiene álbumes disponibles.</p>
     <% } else { %>
-      <% albumes.forEach(album => { %>
+      <% albumesFiltrados.forEach(album => { %>
         <div class="album">
           <h4><%= album.titulo %></h4>
+          <% if (album.modo_publico) { %><p class="album-publico">🌍 álbum público</p><% } %>
 
           <% const imagenesAlbum = imagenes.filter(img => img.albumes_id === album.albumes_id); %>
-
           <% if (imagenesAlbum.length > 0) { %>
             <div class="imagenes-album-grid">
               <% imagenesAlbum.forEach(img => { %>
@@ -72,7 +78,7 @@
 
                   <!-- Formulario para comentar -->
                   <form action="/comentar/<%= img.imagenes_id %>" method="POST" class="form-comentario">
-                    <input type="text" name="texto" placeholder="Escribí un comentario" required>
+                    <input type="text" name="contenido" placeholder="Escribí un comentario" required>
                     <button type="submit">Comentar</button>
                   </form>
                 </div>
@@ -85,12 +91,8 @@
       <% }) %>
     <% } %>
   </section>
-<% } else { %>
-  <p>Solo los amigos pueden ver los álbumes.</p>
-<% } %>
 </main>
 
-        
 <script>
   const form = document.getElementById('formSolicitud');
   const boton = document.getElementById('botonSolicitud');
@@ -106,12 +108,11 @@
             'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest'
           },
-          body: JSON.stringify({}) //objeto vacio para respetar el post
+          body: JSON.stringify({})
         });
 
         if (res.ok) {
-          // Ocultar el formulario y mostrar mensaje
-          form.innerHTML = '<p>Solicitud enviada</p>';
+          form.innerHTML = '<p>📨 Solicitud enviada</p>';
         } else {
           const error = await res.text();
           alert('Error al enviar la solicitud: ' + error);

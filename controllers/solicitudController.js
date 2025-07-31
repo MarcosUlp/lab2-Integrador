@@ -1,6 +1,6 @@
 const Solicitud = require('../models/solicitudesAmistad');
 const notificaciones = require('../models/notificaciones');
-
+const { crearYEmitirNotificacion } = require('../utils/notificacionesService');
 const enviarSolicitud = async (req, res) => {
   const emisorId = req.session.user.id;
   const receptorId = parseInt(req.params.id);
@@ -17,16 +17,19 @@ const enviarSolicitud = async (req, res) => {
   const solicitudId = await Solicitud.enviarSolicitud(emisorId, receptorId);
   console.log('solicitud enviada, id de la solicitud: ', solicitudId); // si tengo el id de la solicitud
   //crear notificacion tipo solicitud
-  await notificaciones.crear({
-    de_usuario_id: emisorId,
+
+
+  crearYEmitirNotificacion({
     para_usuario_id: receptorId,
+    de_usuario_id: emisorId,
     tipo: 'solicitud',
     imagen_id: null,
-    solicitud_id: solicitudId //pero aca no se llena 
+    mensaje: 'te envió una solicitud de amistad',
+    solicitud_id: solicitudId
   });
 
-  if(req.headers['x-requested-with']==='XMLHttpRequest'){
-    return res.status(200).json({mensaje: 'Solicitud enviada'})
+  if (req.headers['x-requested-with'] === 'XMLHttpRequest') {
+    return res.status(200).json({ mensaje: 'Solicitud enviada' })
   }
 
   res.redirect('/usuarios/perfilVisitado/' + receptorId);

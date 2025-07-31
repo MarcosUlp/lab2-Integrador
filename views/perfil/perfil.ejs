@@ -21,38 +21,25 @@
 
   </section>
 
-
-  <!-- FOTO DE PORTADA 
-        <div class="portada">
-          <form action="/usuarios/subir-portada" method="POST" enctype="multipart/form-data">
-            <input type="file" name="foto_portada" accept="image/*" required>
-            <button type="submit">Cambiar foto de portada</button>
-          </form>
-
-          <% if (user.foto_portada) { %>
-            <img src="<%= user.foto_portada %>" alt="Portada">
-            <% } else { %>
-              <p>No tienes foto de portada</p>
-              <% } %>
-        </div>-->
-
   <!-- FOTO DE PERFIL -->
-  <div class="foto-perfil">
-    <form action="/usuarios/subir-perfil" method="POST" enctype="multipart/form-data">
-      <input type="file" name="foto_perfil" accept="image/*" required>
-      <button type="submit">Cambiar foto de perfil</button>
-    </form>
+  <div class="acciones-usuario">
 
-    <% if (user.foto_perfil) { %>
-      <img src="<%= user.foto_perfil %>" alt="Foto de perfil">
-      <% } else { %>
-        <p>No tienes foto de perfil</p>
-        <% } %>
-  </div>
-
-  <form action="/solicitudes/pendientes" method="GET">
-    <button type="submit">Ver Solicitudes de Amistad</button>
+  <!-- Formulario para subir foto de perfil -->
+  <form action="/usuarios/subir-perfil" method="POST" enctype="multipart/form-data" class="form-accion">
+    <label class="file-label">
+      📸 Elegir nueva foto de perfil
+      <input type="file" name="foto_perfil" accept="image/*" required hidden>
+    </label>
+    <button type="submit" class="btn-accion">Cambiar foto de perfil</button>
   </form>
+
+  <!-- Formulario para ver solicitudes de amistad -->
+  <form action="/solicitudes/pendientes" method="GET" class="form-accion">
+    <button type="submit" class="btn-accion">🤝 Ver solicitudes de amistad</button>
+  </form>
+
+</div>
+
 
   <!-- SUBIR ÁLBUM -->
   <section class="subir-album">
@@ -68,11 +55,11 @@
 
       <label class="publico-checkbox">
         <input type="checkbox" name="modo_publico" value="1">
-        Hacer álbum público 🌍
+        álbum público 🌍
       </label>
 
       <div class="etiquetas-checkboxes">
-        <h3>🧵 Elegí etiquetas:</h3>
+        <h3>Elegí etiquetas:</h3>
         <div class="checkbox-etiquetas">
           <% etiquetas.forEach(etiqueta=> { %>
             <label class="checkbox-tag">
@@ -93,7 +80,7 @@
     <h2>Mis álbumes</h2>
 
     <% if (albumes.length===0) { %>
-      <p>No has creado álbumes todavía.</p>
+      <p>No tienes ningun album.</p>
       <% } else { %>
         <% albumes.forEach(album=> { %>
 
@@ -148,7 +135,7 @@
                                         <!-- Formulario para comentar -->
                                         <form action="/comentar/<%= img.imagenes_id %>" method="POST"
                                           class="form-comentario">
-                                          <input type="text" name="texto" placeholder="Escribí un comentario" required>
+                                          <input type="text" name="contenido" placeholder="Escribí un comentario" required>
                                           <button type="submit">Comentar</button>
                                         </form>
                                 </div>

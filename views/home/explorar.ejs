@@ -1,1 +1,56 @@
-//esta la usaremos en caso de entrar sin cuenta(modo vitrina, portafolio publico)
+<main class="explorar">
+  <h2>🌍 Álbumes públicos recientes</h2>
+  <p class="descripcion-explorar">
+    Descubre las últimas creaciones compartidas por los artesanos de nuestra comunidad. Explora álbumes públicos y
+    conoce su arte sin necesidad de iniciar sesión.
+  </p>
+  <form method="get" action="/explorar" class="form-busqueda">
+    <input type="text" name="titulo" placeholder="Buscar por nombre de álbum" value="<%= query.titulo || '' %>">
+
+    <fieldset>
+      <legend>Filtrar por etiquetas</legend>
+      <% etiquetasDisponibles.forEach(etiqueta=> { %>
+        <label>
+          <input type="checkbox" name="etiquetas" value="<%= etiqueta.etiquetas_id %>" <%=(query.etiquetas &&
+            (Array.isArray(query.etiquetas) ? query.etiquetas.includes(etiqueta.etiquetas_id.toString()) :
+            query.etiquetas===etiqueta.etiquetas_id.toString())) ? 'checked' : '' %> >
+          <%= etiqueta.nombre %>
+        </label>
+        <% }); %>
+    </fieldset>
+
+    <button type="submit">Buscar</button>
+  </form>
+
+
+  <% if (albumes.length> 0) { %>
+    <div class="galeria-explorar">
+      <% albumes.forEach(album=> { %>
+        <div class="card-album">
+          <% if (album.imagen_principal) { %>
+            <img src="<%= album.imagen_principal %>" alt="Imagen del álbum" class="preview-album">
+            <% } else { %>
+              <div class="sin-imagen">Sin imagen</div>
+              <% } %>
+
+                <div class="info-album">
+                  <h4>
+                    <%= album.titulo %>
+                  </h4>
+                  <p>👤 <strong>
+                      <%= album.username %>
+                    </strong></p>
+                  <% if (album.descripcion) { %>
+                    <p class="descripcion-album">
+                      <%= album.descripcion %>
+                    </p>
+                    <% } %>
+                      <a href="albumes/<%= album.albumes_id %>" class="btn-ir-album">Ver álbum</a>
+                </div>
+        </div>
+        <% }) %>
+    </div>
+    <% } else { %>
+      <p>No hay álbumes públicos aún.</p>
+      <% } %>
+</main>

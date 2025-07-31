@@ -1,33 +1,55 @@
-const Comentario = require('../models/comentarios');
-const notificaciones = require('../models/notificaciones');
+const comentarioModel = require('../models/comentarios');
+const imagenModel = require('../models/imagen');
+const notificacionesService = require('../utils/notificacionesService');
 
-exports.comentarImagen = async (req, res) => {
-  const usuarioId = req.session.user.id;
-  const imagenId = parseInt(req.params.imagenId);
-  const { texto } = req.body;
-
-  if (!texto) {
-    return res.status(400).send('Comentario vacío.');
-  }
-
+exports.agregarComentario = async (req, res) => {
   try {
-    await Comentario.agregarComentario(usuarioId, imagenId, texto);
-    const imagen = await Comentario.obtenerUsuarioDeImagen(imagenId);
+    const { imagenId } = req.params;
+    const { contenido } = req.body;  // o { texto } si cambias el formulario
+    const usuarioId = req.session.user.id;
+
+    if (!contenido || contenido.trim() === '') {
+      return res.redirect(req.get('referer') || '/inicio');
+    }
+
+    // Guardar comentario
+    await comentarioModel.agregarComentario(usuarioId, imagenId, contenido);
+
+    // Buscar dueño de la imagen
+    console.log('datos obtenidos de ', imagenId )
+    const imagen = await imagenModel.obtenerUsuarioPorIdImagen(imagenId);
+    console.log('Datos de la imagen:', imagen.usuario_id);
+
+    if (!imagen || !imagen.usuario_id) {
+      console.error('esta es la imagen que supuestamente se comenta', imagen);
+      return res.status(404).send('Imagen no encontrada');
+    }
+
     const receptorId = imagen.usuario_id;
+    console.error('este seria el destinatario del comentario ', receptorId );
+    console.error('y este seria el que comento la imagen ', usuarioId );
+    
+
+
+    // No se notifica si te comentás a vos mismo
+    console.log('[BACK] Se está intentando crear y emitir una notificación en comentarioController...');
 
     if (receptorId !== usuarioId) {
-      //crea notificacion tipo comentario
-      await notificaciones.crear({
-        de_usuario_id: usuarioId,
+      await notificacionesService.crearYEmitirNotificacion({
         para_usuario_id: receptorId,
+        de_usuario_id: usuarioId,
         tipo: 'comentario',
-        imagen_id: imagenId
+        mensaje: contenido,
+        extraData: { imagen_id: imagenId },
+        solicitud_id: null
       });
     }
-    res.redirect(req.get('referer')); // supuestamente vuelva a la misma pag
 
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error al comentar.');
+    res.redirect(req.get('referer') || '/inicio');
+
+  } catch (error) {
+    console.error('Error al agregar comentario:', error);
+    res.status(500).send('Error interno del servidor');
   }
 };
+

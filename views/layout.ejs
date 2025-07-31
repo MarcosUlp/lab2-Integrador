@@ -11,9 +11,13 @@
   <link rel="stylesheet" href="/css/inicio.css">
   <link rel="stylesheet" href="/css/album.css">
   <link rel="stylesheet" href="/css/styleHeader.css">
+  <link rel="stylesheet" href="/css/auth.css">
+  <link rel="stylesheet" href="/css/explorar.css">
+
 </head>
 
 <body>
+
   <%- include('./partials/header') %>
     <%- include('./partials/sidebar') %>
 
@@ -22,6 +26,7 @@
       </main>
 
       <%- include('./partials/footer') %>
+        <!--Script para el menu hamburguesa-->
         <script>
           const menuToggle = document.getElementById('menu-hamburguesa');
           const sidebar = document.getElementById('sidebar');
@@ -38,8 +43,32 @@
             }
           });
         </script>
-      <script src="/js/notificaciones.js"> </script>
+        <!--Script para el dropdown de notificaciones-->
+        <script>
+          const btnNotificaciones = document.getElementById('btn-notificaciones');
+          const dropdown = document.getElementById('dropdown-notificaciones');
 
+          btnNotificaciones.addEventListener('click', function (e) {
+            e.preventDefault();
+            dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display === '' ? 'block' : 'none';
+          });
+
+          // Cierra el dropdown si se hace clic fuera
+          window.addEventListener('click', function (e) {
+            if (!dropdown.contains(e.target) && !btnNotificaciones.contains(e.target)) {
+              dropdown.style.display = 'none';
+            }
+          });
+        </script>
+
+        <script>
+          window.USER_ID = "<%= user ? user.id : '' %>";
+        </script>
+
+
+        <script src="/socket.io/socket.io.js"></script>
+
+        <script src="/js/notificaciones.js"></script>
 </body>
 
 </html>

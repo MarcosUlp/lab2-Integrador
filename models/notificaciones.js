@@ -1,16 +1,24 @@
 const pool = require('../database/db');
 
 module.exports = {
-    crear: async ({ de_usuario_id, para_usuario_id, tipo, imagen_id, solicitud_id }) => {
-        await pool.query(
-            `INSERT INTO notificaciones (de_usuario_id, para_usuario_id, tipo, imagenes_id, solicitud_id, visto, fecha)
-     VALUES (?, ?, ?, ?, ?, false, NOW())`,
-            [de_usuario_id, para_usuario_id, tipo, imagen_id, solicitud_id]
+    crear: async ({ para_usuario_id, de_usuario_id, tipo, mensaje }) => {
+        const [result] = await pool.query(
+            'INSERT INTO notificaciones (para_usuario_id, de_usuario_id, tipo, mensaje, fecha, visto) VALUES (?, ?, ?, ?, NOW(), 0)',
+            [para_usuario_id, de_usuario_id, tipo, mensaje]
         );
+
+        return result.insertId; // ahora sí, result está definido
+    },
+    async obtenerInfoUsuario(userId) {
+        const [rows] = await pool.query(
+            'SELECT username, foto_perfil FROM usuarios WHERE usuario_id = ?',
+            [userId]
+        );
+        return rows[0];
     },
 
     obtenerPorUsuario: async (usuarioId) => {
-    const [rows] = await pool.query(`
+        const [rows] = await pool.query(`
         SELECT n.*, u.username, u.foto_perfil
         FROM notificaciones n
         JOIN usuarios u ON n.de_usuario_id = u.usuario_id
@@ -22,8 +30,8 @@ module.exports = {
           AND (n.tipo != 'solicitud' OR s.estado = 'pendiente')
         ORDER BY n.fecha DESC
     `, [usuarioId]);
-    return rows;
-},
+        return rows;
+    },
 
 
     marcarComoVistas: async (usuarioId) => {
